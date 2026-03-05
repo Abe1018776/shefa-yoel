@@ -8,20 +8,21 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #111113;
-  --surface: #1a1a1f;
-  --surface2: #222228;
-  --surface3: #2a2a32;
-  --border: #333340;
-  --text: #e8e6f0;
-  --text2: #aaa8b8;
-  --accent: #c9a227;
-  --accent2: #e6b82e;
-  --blue: #5b8def;
-  --blue2: #3d6fd6;
-  --green: #4caf7a;
-  --purple: #9b7ed8;
-  --red: #e05555;
+  --bg: #f4f2ed;
+  --surface: #ffffff;
+  --surface2: #f9f7f3;
+  --surface3: #edeae3;
+  --border: #d5d0c6;
+  --text: #1a1a1a;
+  --text2: #666660;
+  --accent: #8b6914;
+  --accent2: #a67c1a;
+  --accent-bg: #fdf6e3;
+  --blue: #2a5a8b;
+  --blue-bg: #eef3fa;
+  --purple: #6a4a8b;
+  --purple-bg: #f3eef8;
+  --red: #a04040;
 }
 
 body {
@@ -44,7 +45,7 @@ body {
   gap: 20px;
   flex-shrink: 0;
 }
-.header h1 { font-size: 22px; font-weight: 600; color: var(--accent); }
+.header h1 { font-size: 24px; font-weight: 700; color: var(--accent); }
 .header .pipe { color: var(--border); font-size: 24px; }
 .search-box {
   flex: 0 0 300px;
@@ -78,6 +79,7 @@ body {
 .main {
   flex: 1;
   display: flex;
+  flex-direction: row;
   overflow: hidden;
 }
 
@@ -86,7 +88,7 @@ body {
   width: 420px;
   min-width: 320px;
   background: var(--surface);
-  border-left: 1px solid var(--border);
+  border-inline-start: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -125,7 +127,7 @@ body {
   margin: 6px 0;
 }
 .list-section-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--accent);
   padding: 10px 14px 6px;
@@ -135,7 +137,7 @@ body {
   z-index: 2;
 }
 .list-section-verse {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text2);
   padding: 0 14px 8px;
   font-weight: 400;
@@ -147,9 +149,10 @@ body {
   cursor: pointer;
   transition: all 0.15s;
   margin: 2px 0;
+  border: 1px solid transparent;
 }
 .list-item:hover { background: var(--surface2); }
-.list-item.active { background: var(--surface3); border: 1px solid var(--accent); }
+.list-item.active { background: var(--accent-bg); border-color: var(--accent); }
 .list-item-id {
   font-size: 12px;
   color: var(--accent);
@@ -158,7 +161,7 @@ body {
   margin-bottom: 4px;
 }
 .list-item-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
   line-height: 1.5;
 }
@@ -173,8 +176,8 @@ body {
   border-radius: 6px;
   font-weight: 500;
 }
-.list-badge.fn { background: rgba(91,141,239,0.15); color: var(--blue); }
-.list-badge.en { background: rgba(155,126,216,0.15); color: var(--purple); }
+.list-badge.fn { background: var(--blue-bg); color: var(--blue); }
+.list-badge.en { background: var(--purple-bg); color: var(--purple); }
 
 /* ── Left Panel: Detail Viewer ── */
 .panel-detail {
@@ -199,15 +202,15 @@ body {
 .detail-chapter-badge {
   display: inline-block;
   background: var(--accent);
-  color: var(--bg);
-  font-size: 13px;
+  color: #fff;
+  font-size: 14px;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 6px;
   margin-bottom: 10px;
 }
 .detail-section-name {
-  font-size: 16px;
+  font-size: 17px;
   color: var(--text2);
   margin-bottom: 20px;
 }
@@ -229,6 +232,7 @@ body {
   border-radius: 14px;
   border: 1px solid var(--border);
   margin-bottom: 30px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .ref-marker {
@@ -252,12 +256,12 @@ body {
 
 /* ── Sources Section ── */
 .sources-header {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   color: var(--blue);
   margin-bottom: 16px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
 }
 
 .source-card {
@@ -266,11 +270,12 @@ body {
   border-radius: 14px;
   margin-bottom: 16px;
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .source-card:hover { border-color: var(--blue); }
-.source-card.highlight { border-color: var(--accent); box-shadow: 0 0 20px rgba(201,162,39,0.15); }
-.source-card.supporting { opacity: 0.85; border-right: 4px solid var(--text2); }
+.source-card.highlight { border-color: var(--accent); box-shadow: 0 0 20px rgba(139,105,20,0.2); }
+.source-card.supporting { opacity: 0.9; border-right: 4px solid var(--text2); }
 
 .source-card-header {
   padding: 16px 20px;
@@ -279,6 +284,7 @@ body {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
 }
 .source-num {
   background: var(--blue);
@@ -312,14 +318,14 @@ body {
   font-weight: 600;
   margin-right: auto;
 }
-.source-lang-tag.hebrew { background: rgba(91,141,239,0.15); color: var(--blue); }
-.source-lang-tag.yiddish { background: rgba(224,85,85,0.15); color: var(--red); }
+.source-lang-tag.hebrew { background: var(--blue-bg); color: var(--blue); }
+.source-lang-tag.yiddish { background: #fce8e8; color: var(--red); }
 
 .source-at-label {
   font-size: 12px;
   padding: 3px 10px;
   border-radius: 6px;
-  background: rgba(170,168,184,0.15);
+  background: var(--surface3);
   color: var(--text2);
   font-weight: 600;
 }
@@ -332,7 +338,7 @@ body {
 }
 
 .endnote-label {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--purple);
   font-weight: 600;
 }
@@ -360,14 +366,7 @@ body {
 </div>
 
 <div class="main">
-  <!-- Detail Viewer (Left) -->
-  <div class="panel-detail" id="detailPanel">
-    <div class="empty-state">בחר הוראה מהרשימה →</div>
-  </div>
-
-  <div class="resize-handle" id="resizeHandle"></div>
-
-  <!-- Lesson List (Right) -->
+  <!-- Lesson List (Right side — first in DOM = right in RTL flex) -->
   <div class="panel-list" id="listPanel">
     <div class="panel-list-header">
       <select class="chapter-select" id="chapterFilter">
@@ -375,6 +374,13 @@ body {
       </select>
     </div>
     <div class="lesson-list" id="lessonList"></div>
+  </div>
+
+  <div class="resize-handle" id="resizeHandle"></div>
+
+  <!-- Detail Viewer (Left side) -->
+  <div class="panel-detail" id="detailPanel">
+    <div class="empty-state">→ בחר הוראה מהרשימה</div>
   </div>
 </div>
 
@@ -474,7 +480,6 @@ function findLesson(id, chNum) {
 
 function selectLesson(id, chNum) {
   activeId = id;
-  // Update active state in list
   document.querySelectorAll('.list-item').forEach(el => {
     el.classList.toggle('active', el.dataset.id === id);
   });
@@ -487,9 +492,7 @@ function renderDetail(id, chNum) {
   const { ch, sec, lesson } = found;
   const panel = document.getElementById('detailPanel');
 
-  // Build ref markers for body
   let bodyHtml = esc(lesson.body || '');
-  // Append markers
   let markers = '';
   (lesson.footnote_refs||[]).forEach(fid => {
     markers += `<span class="ref-marker" onclick="highlightSource('fn-${fid}')">${fid}</span>`;
@@ -508,7 +511,6 @@ function renderDetail(id, chNum) {
     <div class="sources-header">מקורות (${(lesson.footnote_refs||[]).length + (lesson.endnote_refs||[]).length})</div>
   `;
 
-  // Footnotes
   (lesson.footnote_refs||[]).forEach(fnId => {
     const fn = lesson.footnotes?.[String(fnId)];
     if (!fn) {
@@ -528,7 +530,6 @@ function renderDetail(id, chNum) {
     });
   });
 
-  // Endnotes
   (lesson.endnote_refs||[]).forEach(enId => {
     const en = lesson.endnotes_data?.[String(enId)];
     if (!en) return;
