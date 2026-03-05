@@ -1,0 +1,1754 @@
+{
+  "דברי יואל": {
+    "sefer": "דברי יואל",
+    "count": 154,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.1",
+        "location": "לשמח\"ת, עמ' תרפז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.2",
+        "location": "לך, עמ' רלח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.2",
+        "location": "חוה\"מ סוכות, עמ' רפג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.3",
+        "location": "וישלח, עמ' קפה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.3",
+        "location": "וארא, עמד טז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.3",
+        "location": "תולדות עמ' תרל\"א, בהספד על הגה\"ק מהרי\"ד מבעלזא זצ\"ל"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.4",
+        "location": "תהלים, עמ' תקלד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.4",
+        "location": "מהדו\"ת, נשא עמ' רלה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.5",
+        "location": "נשא, עמ' רלט"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.6",
+        "location": "פקודי עמ' תיד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.6",
+        "location": "עמ' תה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.6",
+        "location": "צו, עמ' קכח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.7",
+        "location": "לשמח\"ת, עמ' תרפז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.7",
+        "location": "נשא, עמ' קלא"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.8",
+        "location": "מהדו\"ת, שופטים עמ' קכה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.1",
+        "location": "ויקהל עמ' תו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.1",
+        "location": "חיי שרה עמ' תצו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.2",
+        "location": "בהעלותך, עמ' רסח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.3",
+        "location": "ויקהל שם"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.3",
+        "location": "מסיבות ומאורעות, עמ' קצב"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.4",
+        "location": "בשלח, עמ' שנד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.4",
+        "location": "בחוקותי, עמ' שצו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.5",
+        "location": "חיי שרה, עמ' תצו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.5",
+        "location": "תזריע, עמ' רעט"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.6",
+        "location": "חיי שרה, עמ' תצה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.7",
+        "location": "חיי שרה שם"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.7",
+        "location": "מסיבות ומאורעות, עמ' קצב"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.8",
+        "location": "חיי שרה שם עמ' תצה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.1",
+        "location": "קדושים, עמ' קג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "משפטים עמ' קנג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "ויצא עמ' ה, מכתי\"ק"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.4",
+        "location": "מהדו\"ת, נצבים עמ' קכח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.4",
+        "location": "כ\"ט שבט, עמ' יג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.1",
+        "location": "פרקי אבות עמ' כא"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.1",
+        "location": "תרומה עמ' רז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.1",
+        "location": "תרומה עמ' רכ\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.2",
+        "location": "לפרשת החודש, עמ' תיב"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.3",
+        "location": "לפרשת החודש עמ' תיב, וכ\"ה בפרשת תזריע עמ' שכח, חקת עמ' עג ועוד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.4",
+        "location": "ויצא עמ' עד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.4",
+        "location": "תזריע עמ' רעח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.5",
+        "location": "שם עמ' רעט"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.6",
+        "location": "תרומה עמ' רכג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.6",
+        "location": "מהדו\"ת, ואתחנן עמ' קפד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.8",
+        "location": "ליום כיפור עמ' שכד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.1",
+        "location": "נח, עמ' קצז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.1",
+        "location": "ויקרא עמ' כז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.2",
+        "location": "בראשית עמ' עה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.3",
+        "location": "ויחי עמ' תקעא"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.2",
+        "location": "מהדו\"ת שופטים, עמ' קיג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.3",
+        "location": "פורים, עמ' תקסט"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.4",
+        "location": "מהדו\"ת נצבים ע' צו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.5",
+        "location": "מהדו\"ת שופטים, עמ' קיג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.6",
+        "location": "מהדו\"ת זאת הברכה, עמ' רפט"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.7",
+        "location": "במדבר, עמ' מז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.8",
+        "location": "פרה החודש, עמ' קפ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.9",
+        "location": "בחקותי, עמ' שפא"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.1",
+        "location": "תרומה עמ' רנה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.1",
+        "location": "לך לך עמ' רכח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.1",
+        "location": "פקודי עמ' רנד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "במדבר עמ' כח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "שם"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "ויצא עמ' עז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "במדבר עמ' כח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "ויצא עמ' עז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "במדבר עמ' כח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.3",
+        "location": "שבת שובה, עמ' שנו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.4",
+        "location": "פר' צו עמ' ק\"כ"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.4",
+        "location": "צו עמ' קכט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.1",
+        "location": "שמות עמ' קכג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.1",
+        "location": "שם"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.3",
+        "location": "מועדים ח\"ו, לכ\"ט שבט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.4",
+        "location": "פר' לך לך עמ' רס\"ב"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.2",
+        "location": "חיי שרה, עמ' תצו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.3",
+        "location": "תרומה עמ' רכג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.1",
+        "location": "פרקי אבות פ\"א מ\"א"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.2",
+        "location": "מהדו\"ת, עקב עמ' שיב"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.2",
+        "location": "כי תשא עמ' שג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.2",
+        "location": "מהדו\"ת, עקב עמ' שיג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.2",
+        "location": "מהדו\"ת, ואתחנן עמ' קפד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.3",
+        "location": "מהדו\"ת, שופטים עמ' קכה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.4",
+        "location": "בראשית עמ' כו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.1",
+        "location": "מצורע עמ' שעט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.1",
+        "location": "קרח עמ' קעו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.2",
+        "location": "תזריע עמ' רעט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.3",
+        "location": "מצורע עמ' שפז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.1",
+        "location": "בהר עמ' שכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.2",
+        "location": "מסיבות ומאורעות, עמ' קצב"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.2",
+        "location": "שם"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.3",
+        "location": "מסיבות ומאורעות, עמ' קצג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.4",
+        "location": "משפטים עמ' קיב"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.4",
+        "location": "בהר עמ' שמה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "לפורים עמ' תמב"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "יתרו עמ' קא"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "ויקהל עמ' שנה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.2",
+        "location": "יתרו עמ' תקעט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.2",
+        "location": "בשלח עמ' שלג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.2",
+        "location": "ויקהל עמ' שנד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.2",
+        "location": "ויקהל עמ' שנד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.3",
+        "location": "יתרו עמ' קא"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.4",
+        "location": "משפטים עמ' קכה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.9.1",
+        "location": "כ\"ט שבט, עמ' סו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.9.2",
+        "location": "כ\"ט שבט, עמ' סו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.9.2",
+        "location": "שם עמ' סה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.1",
+        "location": "תרומה עמ' רכג"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.1",
+        "location": "תרומה עמ' רכג"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.4",
+        "location": "שמיני עמ' רב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.4",
+        "location": "בהעלותך עמ' רנב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.1",
+        "location": "פקודי עמ' רנד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.2",
+        "location": "קדושים עמ' קכה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.2",
+        "location": "לך עמ' רנט"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.3",
+        "location": "מהדו\"ת, חוקת עמ' ריג"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.4",
+        "location": "מסיבות ומאורעות, עמ' רט"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.1",
+        "location": "לפסח, עמ' קפד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.1",
+        "location": "אמור עמ' רז"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.2",
+        "location": "אמור עמ' רלה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.6",
+        "location": "מסיבות ומאורעות, עמ' שמו"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.7",
+        "location": "פר' בחוקותי עמ' שפ\"ט"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.7",
+        "location": "מהדו\"ת, בלק עמ' תס\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.8",
+        "location": "מהדו\"ת, ראה עמ' שעח"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.8",
+        "location": "מסיבות ומאורעות, עמ' שמו"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.9",
+        "location": "אמור עמ' רלה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.9",
+        "location": "דברי יואל, אמור עמ' רלה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.1",
+        "location": "לפסח, עמ' קב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.3",
+        "location": "אמור עמ' קפו"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.4",
+        "location": "לשמח\"ת, עמ' תרכ\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.1",
+        "location": "כ\"ט שבט, עמ' כט"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.2",
+        "location": "ליוהכ\"פ, עמ' שכד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.4",
+        "location": "בראשית עמ' לד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "מהדו\"ת, חקת עמ' שלג"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "בשלח עמ' תמא"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "שם"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.2",
+        "location": "ויצא עמ' לב"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.3",
+        "location": "כ\"ט שבט, עמ' ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.3.1",
+        "location": "בראשית עמ' ל\"ג"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.3.2",
+        "location": "שם"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.3.2",
+        "location": "שם"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "חינוך ביהמ\"ד זופניק, בהר עמ' שכה"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "כ\"ט שבט, עמ' ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "בראשית עמ' לד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "כ\"ט שבט, עמ' ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "לסוכות עמ' רפח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.3",
+        "location": "סוכות עמ' רפח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.3",
+        "location": "חינוך ביהמ\"ד זופניק, בהר עמ' שכה"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.4",
+        "location": "סוכות עמ' רפח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.1",
+        "location": "תזריע, עמ' שיד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.2",
+        "location": "תרומה עמ' ר\"נ, כ\"ט שבט עמ' סז, ועוד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.2",
+        "location": "תניינא, תבא עמ' תמח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.1",
+        "location": "כ\"ט שבט, עמ' ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.1",
+        "location": "בראשית עמ' לד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.2",
+        "location": "כ\"ט שבט עמ' ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.2",
+        "location": "בהר עמ' שמב"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.2",
+        "location": "כ\"ט שבט, עמ' צא"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.3",
+        "location": "אמור עמ' רב"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.3",
+        "location": "חנוכה ח\"ב, עמ' תטו"
+      }
+    ]
+  },
+  "(דברי רבינו)": {
+    "sefer": "(דברי רבינו)",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.2",
+        "location": "דברות קודש, ליל ה' דחנוכה תשכ\"ה"
+      }
+    ]
+  },
+  "(ביאור רבינו)": {
+    "sefer": "(ביאור רבינו)",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.6",
+        "location": "שם"
+      }
+    ]
+  },
+  "דברות קודש": {
+    "sefer": "דברות קודש",
+    "count": 82,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.8",
+        "location": "בראשית תשכ\"ח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.9",
+        "location": "ויצא תשט\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.3",
+        "location": "תצוה תשי\"ד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.5",
+        "location": "פתיחה חורף תשכ\"ח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.6",
+        "location": "פתיחה חורף תשכ\"ח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.8",
+        "location": "שם"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.1",
+        "location": "ויגש תשט\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.2",
+        "location": "ויגש תשט\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "נח תשט\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "וישלח תש\"כ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "וישלח תש\"כ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "וישלח, תשט\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.4",
+        "location": "נצבים תשכ\"ג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.4",
+        "location": "כ\"ט שבט תש\"כ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.1",
+        "location": "וירא תשי\"ח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.2",
+        "location": "פר' החודש תשכ\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.2",
+        "location": "בראשית תשי\"ח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.2",
+        "location": "וארא תשט\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.3",
+        "location": "חוקת תשכ\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.4",
+        "location": "מסיבה להחזקת הישיבה, ויצא תשכ\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.4",
+        "location": "פתיחה תזו\"מ תשכ\"ו"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.5",
+        "location": "שם"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.7",
+        "location": "אמור תש\"כ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.4.8",
+        "location": "שמות תשט\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.1",
+        "location": "תצוה תשי\"ד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.1",
+        "location": "נח תשט\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.1",
+        "location": "ויקרא תשכ\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.3",
+        "location": "ויחי תשי\"ז"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.4",
+        "location": "תצוה תשי\"ד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.4",
+        "location": "ויחי תשכ\"ה"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.1",
+        "location": "שובבי\"ם ח\"ד ע' שצב"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.2",
+        "location": "שמות תשכ\"ד"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.2",
+        "location": "שובבי\"ם, ח\"ד עמ' תקח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.4",
+        "location": "חקת תש\"כ"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.5",
+        "location": "שובבי\"ם, ח\"ד עמ' תקח"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.6",
+        "location": "שובבי\"ם ח\"ג עמ' שעג"
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.6",
+        "location": "שובבי\"ם, ח\"ג ע' שנז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.2",
+        "location": "וישב תשכ\"ג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.2",
+        "location": "ויגש תשי\"ט"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.1",
+        "location": "פתיחה בחוקותי תשכ\"ד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.1",
+        "location": "פתיחה לך תשכ\"ד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.4",
+        "location": "פתיחה, לך לך תשכ\"ד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.4",
+        "location": "פורים תש\"כ, כאשר דיבר מנהמת ליבו אודות קנאתו ב'ערליכער בעל הבית' העוסק בפרנסה ואינו מנהיג, התבטא שעיקר מעלת הבעל הבית הוא הרצון שלו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.1",
+        "location": "פתיחה תזו\"מ תשכ\"ג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.1",
+        "location": "פתיחה תזו\"מ תשכ\"ו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.2",
+        "location": "פתיחה, לך לך תשכ\"ח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.5.3",
+        "location": "שמות תשכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.1",
+        "location": "כ\"ט שבט תש\"כ"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.2",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.2",
+        "location": "פתיחה, לך לך תשכ\"ד"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.1",
+        "location": "פתיחה, נח תשכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.2",
+        "location": "פתיחה, לך לך תשכ\"ז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.3",
+        "location": "פתיחה, לך לך תשכ\"ז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "פורים תש\"כ"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "פורים תש\"כ"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.3",
+        "location": "בסעודת פורים שנת תשי\"ח"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.2",
+        "location": "ראה תש\"כ"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.2",
+        "location": "בשלח תשכ\"ב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.3",
+        "location": "בשלח תשכ\"ב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.3",
+        "location": "שמות תשכ\"ה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.1",
+        "location": "פתיחה, לך לך תשכ\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.1",
+        "location": "תרומה תש\"כ"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.2",
+        "location": "פתיחה, בהר תשכ\"ה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.2",
+        "location": "פתיחה, לך לך תשכ\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.2",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.3",
+        "location": "שמות תשכ\"ה"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.3",
+        "location": "מסיבה להחזקת הישיבה, וארא תשכ\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.7",
+        "location": "מסיבה להחזקת הישיבה, וארא תשכ\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.7",
+        "location": "פתיחה, בה\"ב תשכ\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.3",
+        "location": "אח\"ק תשכ\"ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.2",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.3",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.3",
+        "location": "תזו\"מ תשכ\"ג"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.4",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "תרומה תשט\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "תרומה תשט\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.1",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ו"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.2",
+        "location": "פתיחה לאברכים, חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.1",
+        "location": "דינער ויחי תשי\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.1",
+        "location": "חיי שרה תשי\"ד"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.2",
+        "location": "פתיחה בהר תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.1",
+        "location": "פתיחה, בהר תשכ\"ה"
+      }
+    ]
+  },
+  "(ראה לעיל)": {
+    "sefer": "(ראה לעיל)",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.1.10",
+        "location": "?"
+      }
+    ]
+  },
+  "ובכתבי יואל": {
+    "sefer": "ובכתבי יואל",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.2",
+        "location": "בראשית אות כ', ועי' דברי יואל עמ' קה"
+      }
+    ]
+  },
+  "וביסוד זה מבאר רבינו": {
+    "sefer": "וביסוד זה מבאר רבינו",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.2.2",
+        "location": "בכתי\"ק שם"
+      }
+    ]
+  },
+  "(שם)": {
+    "sefer": "(שם)",
+    "count": 11,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.2",
+        "location": null
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.2",
+        "location": null
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.2",
+        "location": null
+      },
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.5",
+        "location": null
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": null
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.1",
+        "location": null
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.3",
+        "location": null
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.1",
+        "location": null
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.2",
+        "location": null
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.3",
+        "location": null
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.2",
+        "location": null
+      }
+    ]
+  },
+  "שם. רבינו מביא את דברי המדרש": {
+    "sefer": "שם. רבינו מביא את דברי המדרש",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.2",
+        "location": "בראשית רבה צג, י"
+      }
+    ]
+  },
+  "ובזה מבאר רבינו מה שאמר יעקב אבינו": {
+    "sefer": "ובזה מבאר רבינו מה שאמר יעקב אבינו",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.3.3",
+        "location": "בראשית רבה סח, א"
+      }
+    ]
+  },
+  "שו\"ת דברי יואל": {
+    "sefer": "שו\"ת דברי יואל",
+    "count": 4,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.2",
+        "location": "או\"ח סי' לא"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.5",
+        "location": "יו\"ד סי' ק'"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.1",
+        "location": "חו\"מ סי' יח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.1",
+        "location": "חו\"מ סי' י\"ח"
+      }
+    ]
+  },
+  "ובטיב לבב": {
+    "sefer": "ובטיב לבב",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.5.3",
+        "location": "ויחי עמ' רצז"
+      }
+    ]
+  },
+  "וראה עוד דברות קודש": {
+    "sefer": "וראה עוד דברות קודש",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.2",
+        "location": "שובבי\"ם, ח\"ג ע' שנז"
+      }
+    ]
+  },
+  "ויש לציין לדברי רבינו": {
+    "sefer": "ויש לציין לדברי רבינו",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "א",
+        "lesson_id": "א.6.3",
+        "location": "דברי יואל מהדו\"ת מטות, עמ' רכז"
+      }
+    ]
+  },
+  "(לשון רבינו)": {
+    "sefer": "(לשון רבינו)",
+    "count": 28,
+    "citations": [
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.1",
+        "location": "תרומה תשכ\"ו"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.1",
+        "location": "דברות קודש, שמות תשכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.4.3",
+        "location": "תרומה תש\"כ"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.1",
+        "location": "דברות קודש, פתיחה תזו\"מ תשכ\"ג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.6.3",
+        "location": "תזו\"מ תשי\"ח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.1",
+        "location": "פתיחה, בהר תשכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.2",
+        "location": "פתיחה, נח תשכ\"ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.2",
+        "location": "דברות קודש, שם"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.7.3",
+        "location": "פתיחה, לך לך תשכ\"ז"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.1",
+        "location": "יתרו תשי\"ח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.2",
+        "location": "יתרו תשי\"ח"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.8.3",
+        "location": "יתרו תשי\"ח"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.1",
+        "location": "דברות קודש, ראה תש\"כ"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.1",
+        "location": "דברות קודש, שבת חוהמ\"פ תשכ\"ב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.6",
+        "location": "דברות קודש פתיחה לאברכים, חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.7",
+        "location": "בלק תשי\"ד"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.8",
+        "location": "ראה תש\"כ"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.8",
+        "location": "דברות קודש, פתיחה לאברכים, חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.5",
+        "location": "דברות קודש, חקת תש\"כ"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.2",
+        "location": "ויצא תשכ\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "דברות קודש, פתיחה לאברכים חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.3",
+        "location": "דברות קודש, פתיחה לאברכים חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.4",
+        "location": "דברות קודש פתיחה לאברכים, חוהמ\"ס תשכ\"ח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.2",
+        "location": "תרומה תשכ\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.5.2",
+        "location": "דברות קודש תבא תשכ\"א"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.2",
+        "location": "דברות קודש, פתיחה בהר תשכ\"ה"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.2",
+        "location": "דברות קודש, כ\"ט שבט תש\"כ"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.3",
+        "location": "דברות קודש אמור תשכ\"ה"
+      }
+    ]
+  },
+  "ובשו\"ת דברי יואל": {
+    "sefer": "ובשו\"ת דברי יואל",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.1.2",
+        "location": "אבהע\"ז סי' קי\"ח"
+      }
+    ]
+  },
+  "כתבי יואל": {
+    "sefer": "כתבי יואל",
+    "count": 4,
+    "citations": [
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.1",
+        "location": "שם"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.3.2",
+        "location": "וארא אות ז', דברי יואל עמ' ריג"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.9.1",
+        "location": "וארא אות ה"
+      },
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.9.3",
+        "location": "חיי שרה, אות ד"
+      }
+    ]
+  },
+  "ויואל משה": {
+    "sefer": "ויואל משה",
+    "count": 6,
+    "citations": [
+      {
+        "chapter": "ב",
+        "lesson_id": "ב.2.1",
+        "location": "מאמר לשון הקודש סי' י\"א"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.3",
+        "location": "מאמר ישוב אר\"י, סי' קכב"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.4",
+        "location": "שם"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.5",
+        "location": "מאמר ישוב א\"י, אות קכג"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.2",
+        "location": "מאמר ג' סי' ל\"ו"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.2",
+        "location": "שם"
+      }
+    ]
+  },
+  "קדושת יואל": {
+    "sefer": "קדושת יואל",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.1.1",
+        "location": "ראה עמ'"
+      }
+    ]
+  },
+  "ובזה מבאר רבינו דברי המדרש רבה": {
+    "sefer": "ובזה מבאר רבינו דברי המדרש רבה",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.1",
+        "location": "פל\"ג ב'"
+      }
+    ]
+  },
+  "די גמרא זאגט אין מלקות דף י'": {
+    "sefer": "די גמרא זאגט אין מלקות דף י'",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.2.3",
+        "location": "ע\"א"
+      }
+    ]
+  },
+  "חידושי תורה": {
+    "sefer": "חידושי תורה",
+    "count": 2,
+    "citations": [
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.3.5",
+        "location": "תשט\"ז, בה\"ב עמ' רכו"
+      },
+      {
+        "chapter": "ג",
+        "lesson_id": "ג.4.2",
+        "location": "תשט\"ז, בה\"ב עמ' תקי"
+      }
+    ]
+  },
+  "דברי יואל מכתבים": {
+    "sefer": "דברי יואל מכתבים",
+    "count": 5,
+    "citations": [
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.2",
+        "location": "מכתב נז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.3",
+        "location": "ח\"א, מכתב נז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.4",
+        "location": "מכתב נז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "מכתב נח"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.4",
+        "location": "ח\"א מכתב א'"
+      }
+    ]
+  },
+  "טיב לבב": {
+    "sefer": "טיב לבב",
+    "count": 5,
+    "citations": [
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.1.2",
+        "location": "ויחי, עמ' רעז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.1",
+        "location": "ויחי, עמ' רע\"ז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.2",
+        "location": "ויחי, עמ' רעז"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.6.1",
+        "location": "ח\"ג עמ' רט, וכ\"ה בספר באילנא דחיי ח\"ב מהדו\"ת עמ' שכ\"ו מזכרונות הרה\"ח ר' יוסף פרענקל ז\"ל"
+      },
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.7.4",
+        "location": "פקודי, דרשה בעיר דעברעצין"
+      }
+    ]
+  },
+  "ובדברי יואל מכתבים": {
+    "sefer": "ובדברי יואל מכתבים",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.2.1",
+        "location": "מכתב ל\"ה - ברכת מז\"ט לתלמיד לקראת נשואיו"
+      }
+    ]
+  },
+  "חידו\"ת מסיבות": {
+    "sefer": "חידו\"ת מסיבות",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.1",
+        "location": "וירא תשט\"ז"
+      }
+    ]
+  },
+  "חידו\"ת למסיבות": {
+    "sefer": "חידו\"ת למסיבות",
+    "count": 1,
+    "citations": [
+      {
+        "chapter": "ד",
+        "lesson_id": "ד.4.3",
+        "location": "בהר עמ' עב"
+      }
+    ]
+  }
+}

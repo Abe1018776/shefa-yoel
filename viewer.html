@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>שפע יואל — שער התורה</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #111113;
+  --surface: #1a1a1f;
+  --surface2: #222228;
+  --surface3: #2a2a32;
+  --border: #333340;
+  --text: #e8e6f0;
+  --text2: #aaa8b8;
+  --accent: #c9a227;
+  --accent2: #e6b82e;
+  --blue: #5b8def;
+  --blue2: #3d6fd6;
+  --green: #4caf7a;
+  --purple: #9b7ed8;
+  --red: #e05555;
+}
+
+body {
+  font-family: 'Noto Sans Hebrew', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.header h1 { font-size: 22px; font-weight: 600; color: var(--accent); }
+.header .pipe { color: var(--border); font-size: 24px; }
+.search-box {
+  flex: 0 0 300px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  opacity: 0.5;
+}
+.header-stats { color: var(--text2); font-size: 14px; margin-right: auto; }
+
+/* ── Main Layout ── */
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Right Panel: Lesson List ── */
+.panel-list {
+  width: 420px;
+  min-width: 320px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.panel-list-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chapter-select {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  outline: none;
+}
+.chapter-select:focus { border-color: var(--accent); }
+
+.lesson-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+.lesson-list::-webkit-scrollbar { width: 6px; }
+.lesson-list::-webkit-scrollbar-track { background: transparent; }
+.lesson-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.list-section {
+  margin: 6px 0;
+}
+.list-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 10px 14px 6px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+.list-section-verse {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 0 14px 8px;
+  font-weight: 400;
+}
+
+.list-item {
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin: 2px 0;
+}
+.list-item:hover { background: var(--surface2); }
+.list-item.active { background: var(--surface3); border: 1px solid var(--accent); }
+.list-item-id {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  font-family: 'Consolas', monospace;
+  margin-bottom: 4px;
+}
+.list-item-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.list-item-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.list-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.list-badge.fn { background: rgba(91,141,239,0.15); color: var(--blue); }
+.list-badge.en { background: rgba(155,126,216,0.15); color: var(--purple); }
+
+/* ── Left Panel: Detail Viewer ── */
+.panel-detail {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 40px;
+  background: var(--bg);
+}
+.panel-detail::-webkit-scrollbar { width: 8px; }
+.panel-detail::-webkit-scrollbar-track { background: transparent; }
+.panel-detail::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text2);
+  font-size: 22px;
+}
+
+.detail-chapter-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.detail-section-name {
+  font-size: 16px;
+  color: var(--text2);
+  margin-bottom: 20px;
+}
+
+.detail-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.detail-body {
+  font-size: 22px;
+  line-height: 2;
+  color: var(--text);
+  padding: 24px 28px;
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+
+.ref-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  vertical-align: super;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.ref-marker:hover { transform: scale(1.2); background: var(--accent); }
+.ref-marker.endnote { background: var(--purple); }
+
+/* ── Sources Section ── */
+.sources-header {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.source-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.source-card:hover { border-color: var(--blue); }
+.source-card.highlight { border-color: var(--accent); box-shadow: 0 0 20px rgba(201,162,39,0.15); }
+.source-card.supporting { opacity: 0.85; border-right: 4px solid var(--text2); }
+
+.source-card-header {
+  padding: 16px 20px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.source-num {
+  background: var(--blue);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.source-card.endnote-card .source-num { background: var(--purple); }
+.source-card.supporting .source-num { background: var(--text2); }
+
+.source-sefer {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+.source-location {
+  font-size: 15px;
+  color: var(--text2);
+}
+.source-lang-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-right: auto;
+}
+.source-lang-tag.hebrew { background: rgba(91,141,239,0.15); color: var(--blue); }
+.source-lang-tag.yiddish { background: rgba(224,85,85,0.15); color: var(--red); }
+
+.source-at-label {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(170,168,184,0.15);
+  color: var(--text2);
+  font-weight: 600;
+}
+
+.source-quote {
+  padding: 20px 24px;
+  font-size: 19px;
+  line-height: 2;
+  color: var(--text);
+}
+
+.endnote-label {
+  font-size: 13px;
+  color: var(--purple);
+  font-weight: 600;
+}
+
+/* ── Resize Handle ── */
+.resize-handle {
+  width: 4px;
+  background: var(--border);
+  cursor: col-resize;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.resize-handle:hover { background: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>שפע יואל</h1>
+  <span class="pipe">|</span>
+  <div class="search-box">
+    <input type="text" id="searchBox" placeholder="חיפוש...">
+  </div>
+  <div class="header-stats" id="stats"></div>
+</div>
+
+<div class="main">
+  <!-- Detail Viewer (Left) -->
+  <div class="panel-detail" id="detailPanel">
+    <div class="empty-state">בחר הוראה מהרשימה →</div>
+  </div>
+
+  <div class="resize-handle" id="resizeHandle"></div>
+
+  <!-- Lesson List (Right) -->
+  <div class="panel-list" id="listPanel">
+    <div class="panel-list-header">
+      <select class="chapter-select" id="chapterFilter">
+        <option value="all">כל הפרקים</option>
+      </select>
+    </div>
+    <div class="lesson-list" id="lessonList"></div>
+  </div>
+</div>
+
+<script>
+let DATA = [];
+let activeId = null;
+
+async function loadData() {
+  const resp = await fetch('data/combined.json');
+  DATA = await resp.json();
+  populateFilters();
+  renderList();
+}
+
+function populateFilters() {
+  const sel = document.getElementById('chapterFilter');
+  DATA.forEach(ch => {
+    const opt = document.createElement('option');
+    opt.value = ch.number;
+    opt.textContent = `פרק ${ch.number} — ${ch.description || ''}`;
+    sel.appendChild(opt);
+  });
+}
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function getFiltered() {
+  const chVal = document.getElementById('chapterFilter').value;
+  const search = document.getElementById('searchBox').value.trim().toLowerCase();
+  let chapters = chVal === 'all' ? DATA : DATA.filter(c => c.number === chVal);
+
+  if (!search) return chapters;
+
+  return chapters.map(ch => ({
+    ...ch,
+    sections: ch.sections.map(sec => ({
+      ...sec,
+      lessons: sec.lessons.filter(l => {
+        const hay = [l.title, l.body,
+          ...Object.values(l.footnotes||{}).map(f=>f?.raw||''),
+          ...Object.values(l.endnotes_data||{}).map(e=>e?.raw||'')
+        ].join(' ').toLowerCase();
+        return hay.includes(search);
+      })
+    })).filter(s => s.lessons.length)
+  })).filter(c => c.sections.length);
+}
+
+function renderList() {
+  const data = getFiltered();
+  const el = document.getElementById('lessonList');
+  let total = 0;
+
+  let html = '';
+  data.forEach(ch => {
+    ch.sections.forEach(sec => {
+      html += `<div class="list-section">
+        <div class="list-section-title">פרק ${esc(ch.number)} · ${esc(sec.heading)}</div>
+        ${sec.verse ? `<div class="list-section-verse">${esc(sec.verse)}</div>` : ''}`;
+
+      sec.lessons.forEach(l => {
+        total++;
+        const fnC = l.footnote_refs?.length || 0;
+        const enC = l.endnote_refs?.length || 0;
+        html += `<div class="list-item ${l.id === activeId ? 'active' : ''}" data-id="${l.id}" data-ch="${ch.number}">
+          <div class="list-item-id">${l.id}</div>
+          <div class="list-item-title">${esc(l.title)}</div>
+          <div class="list-item-meta">
+            ${fnC ? `<span class="list-badge fn">${fnC} הערות</span>` : ''}
+            ${enC ? `<span class="list-badge en">${enC} הערות סוף</span>` : ''}
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+    });
+  });
+
+  el.innerHTML = html;
+  document.getElementById('stats').textContent = `${total} הוראות`;
+
+  el.querySelectorAll('.list-item').forEach(item => {
+    item.addEventListener('click', () => selectLesson(item.dataset.id, item.dataset.ch));
+  });
+}
+
+function findLesson(id, chNum) {
+  for (const ch of DATA) {
+    if (chNum && ch.number !== chNum) continue;
+    for (const sec of ch.sections) {
+      for (const l of sec.lessons) {
+        if (l.id === id) return { ch, sec, lesson: l };
+      }
+    }
+  }
+  return null;
+}
+
+function selectLesson(id, chNum) {
+  activeId = id;
+  // Update active state in list
+  document.querySelectorAll('.list-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+  renderDetail(id, chNum);
+}
+
+function renderDetail(id, chNum) {
+  const found = findLesson(id, chNum);
+  if (!found) return;
+  const { ch, sec, lesson } = found;
+  const panel = document.getElementById('detailPanel');
+
+  // Build ref markers for body
+  let bodyHtml = esc(lesson.body || '');
+  // Append markers
+  let markers = '';
+  (lesson.footnote_refs||[]).forEach(fid => {
+    markers += `<span class="ref-marker" onclick="highlightSource('fn-${fid}')">${fid}</span>`;
+  });
+  (lesson.endnote_refs||[]).forEach(eid => {
+    markers += `<span class="ref-marker endnote" onclick="highlightSource('en-${eid}')">ה${eid}</span>`;
+  });
+
+  let html = `
+    <div class="detail-chapter-badge">פרק ${esc(ch.number)} — ${esc(ch.description)}</div>
+    <div class="detail-section-name">${esc(sec.heading)}${sec.verse ? ' / ' + esc(sec.verse) : ''}</div>
+    <div class="detail-title">${esc(lesson.title)}</div>
+    <div class="detail-body">${bodyHtml}
+      <div style="margin-top:14px">${markers}</div>
+    </div>
+    <div class="sources-header">מקורות (${(lesson.footnote_refs||[]).length + (lesson.endnote_refs||[]).length})</div>
+  `;
+
+  // Footnotes
+  (lesson.footnote_refs||[]).forEach(fnId => {
+    const fn = lesson.footnotes?.[String(fnId)];
+    if (!fn) {
+      html += renderSourceCard(fnId, null, false);
+      return;
+    }
+    const sources = fn.sources || [];
+    if (sources.length === 0) {
+      html += `<div class="source-card" id="fn-${fnId}">
+        <div class="source-card-header"><span class="source-num">${fnId}</span><span class="source-sefer">(מקור)</span></div>
+        <div class="source-quote">${esc(fn.raw)}</div>
+      </div>`;
+      return;
+    }
+    sources.forEach((src, i) => {
+      html += renderSourceCard(fnId, src, src.is_supporting, i > 0);
+    });
+  });
+
+  // Endnotes
+  (lesson.endnote_refs||[]).forEach(enId => {
+    const en = lesson.endnotes_data?.[String(enId)];
+    if (!en) return;
+    html += `<div class="source-card endnote-card" id="en-${enId}">
+      <div class="source-card-header">
+        <span class="source-num">ה${enId}</span>
+        <span class="endnote-label">הערת סוף</span>
+      </div>
+      <div class="source-quote">${esc(en.raw)}</div>
+    </div>`;
+  });
+
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+}
+
+function renderSourceCard(fnId, src, isSupporting, hideNum) {
+  if (!src) {
+    return `<div class="source-card" id="fn-${fnId}">
+      <div class="source-card-header"><span class="source-num">${fnId}</span><span class="source-sefer">(לא נמצא)</span></div>
+    </div>`;
+  }
+  const langClass = src.language === 'yiddish' ? 'yiddish' : 'hebrew';
+  const langLabel = src.language === 'yiddish' ? 'אידיש' : 'עברית';
+
+  return `<div class="source-card ${isSupporting ? 'supporting' : ''}" id="fn-${fnId}">
+    <div class="source-card-header">
+      ${!hideNum ? `<span class="source-num">${fnId}</span>` : '<span style="width:30px"></span>'}
+      ${isSupporting ? '<span class="source-at-label">@ מקור תומך</span>' : ''}
+      <span class="source-sefer">${esc(src.sefer) || '—'}</span>
+      ${src.location ? `<span class="source-location">(${esc(src.location)})</span>` : ''}
+      <span class="source-lang-tag ${langClass}">${langLabel}</span>
+    </div>
+    ${src.quote ? `<div class="source-quote">${esc(src.quote)}</div>` : ''}
+  </div>`;
+}
+
+function highlightSource(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('highlight');
+  setTimeout(() => el.classList.remove('highlight'), 2000);
+}
+
+// Resize handle
+const handle = document.getElementById('resizeHandle');
+const listPanel = document.getElementById('listPanel');
+let resizing = false;
+handle.addEventListener('mousedown', () => { resizing = true; document.body.style.cursor = 'col-resize'; });
+document.addEventListener('mousemove', e => {
+  if (!resizing) return;
+  const w = document.body.clientWidth - e.clientX;
+  if (w > 250 && w < 700) listPanel.style.width = w + 'px';
+});
+document.addEventListener('mouseup', () => { resizing = false; document.body.style.cursor = ''; });
+
+document.getElementById('chapterFilter').addEventListener('change', renderList);
+document.getElementById('searchBox').addEventListener('input', debounce(renderList, 300));
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+loadData();
+</script>
+</body>
+</html>
