@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שפע יואל - השוואת גרסאות</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'David', 'Narkisim', serif; background: #f5f0e8; color: #2c1810; }
+
+        .header { background: #4a2c1a; color: #f5f0e8; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 22px; }
+        .header .stats { font-size: 14px; opacity: 0.8; }
+
+        .controls { background: #fff; padding: 12px 24px; border-bottom: 2px solid #d4c5a9; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .controls select, .controls input, .controls button {
+            padding: 8px 12px; border: 1px solid #d4c5a9; border-radius: 6px; font-size: 14px; font-family: inherit;
+        }
+        .controls button { background: #4a2c1a; color: white; cursor: pointer; border: none; }
+        .controls button:hover { background: #6b3d24; }
+        .controls button.generate { background: #2a6b3d; }
+        .controls button.generate:hover { background: #3a8b4d; }
+
+        .main { display: flex; height: calc(100vh - 120px); }
+
+        .lesson-list { width: 280px; background: #fff; border-left: 2px solid #d4c5a9; overflow-y: auto; }
+        .lesson-item { padding: 10px 14px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 13px; }
+        .lesson-item:hover { background: #f5f0e8; }
+        .lesson-item.active { background: #e8dcc8; border-right: 3px solid #4a2c1a; }
+        .lesson-item .id { font-weight: bold; color: #4a2c1a; }
+        .lesson-item .title { display: block; margin-top: 4px; color: #555; font-size: 12px; }
+        .lesson-item .badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 10px; margin-top: 4px; }
+        .badge.has-versions { background: #d4edda; color: #155724; }
+        .badge.empty { background: #f8d7da; color: #721c24; }
+        .badge.finalized { background: #cce5ff; color: #004085; }
+
+        .content { flex: 1; overflow-y: auto; padding: 24px; }
+
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        .panel { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .panel h3 { font-size: 16px; color: #4a2c1a; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #d4c5a9; }
+        .panel .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .panel .title-text { font-weight: bold; font-size: 15px; margin-bottom: 12px; }
+        .panel .body-text { font-size: 14px; line-height: 1.8; }
+        .panel.human { border-top: 3px solid #2a6b3d; }
+        .panel.ai { border-top: 3px solid #4a2c1a; }
+        .panel.ai.negative { border-top: 3px solid #c0392b; }
+        .panel.ai.positive { border-top: 3px solid #27ae60; }
+
+        .sources-panel { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .sources-panel h3 { font-size: 16px; color: #4a2c1a; margin-bottom: 12px; }
+        .source-item { background: #f9f6f0; border-radius: 6px; padding: 12px; margin-bottom: 10px; border-right: 3px solid #d4c5a9; }
+        .source-item.supporting { border-right-color: #95a5a6; }
+        .source-item .sefer { font-weight: bold; color: #4a2c1a; font-size: 13px; }
+        .source-item .raw { font-size: 13px; line-height: 1.6; margin-top: 6px; }
+
+        .scores { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+        .score { text-align: center; }
+        .score .value { font-size: 20px; font-weight: bold; }
+        .score .name { font-size: 10px; color: #888; }
+
+        .eval-notes { margin-top: 12px; font-size: 13px; color: #555; background: #f9f6f0; padding: 10px; border-radius: 6px; }
+
+        .version-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+        .version-tab { padding: 6px 12px; background: #eee; border-radius: 4px 4px 0 0; cursor: pointer; font-size: 12px; }
+        .version-tab.active { background: #4a2c1a; color: white; }
+        .version-tab.positive { background: #d4edda; }
+        .version-tab.negative { background: #f8d7da; }
+
+        .empty-state { text-align: center; padding: 60px; color: #888; }
+        .empty-state h2 { margin-bottom: 12px; }
+
+        #loading { display: none; text-align: center; padding: 20px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>שפע יואל — השוואת גרסאות</h1>
+        <div class="stats" id="stats"></div>
+    </div>
+
+    <div class="controls">
+        <select id="chapterFilter">
+            <option value="">כל הפרקים</option>
+            <option value="א">פרק א</option>
+            <option value="ב">פרק ב</option>
+            <option value="ג">פרק ג</option>
+            <option value="ד">פרק ד</option>
+        </select>
+        <select id="statusFilter">
+            <option value="">כל הסטטוסים</option>
+            <option value="imported">imported</option>
+            <option value="finalized">finalized</option>
+            <option value="empty">empty</option>
+            <option value="review">review</option>
+        </select>
+        <input type="text" id="search" placeholder="חיפוש..." style="width: 200px;">
+        <button onclick="loadSkillExamples()">דוגמאות מיומנות</button>
+    </div>
+
+    <div class="main">
+        <div class="lesson-list" id="lessonList"></div>
+        <div class="content" id="content">
+            <div class="empty-state">
+                <h2>בחר שיעור מהרשימה</h2>
+                <p>או לחץ על "דוגמאות מיומנות" לראות את כל הדוגמאות הטובות והרעות</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading">טוען...</div>
+
+    <script>
+        const SUPABASE_URL = 'https://idbvezfpkodmohebrwkc.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkYnZlemZwa29kbW9oZWJyd2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NzQ2MjIsImV4cCI6MjA4ODM1MDYyMn0.l3Y4NJuo8b4L1sQrf27C82dWMkQFDwuRFF4Wk93ZJqA';
+
+        async function query(table, params = '') {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+            });
+            return res.json();
+        }
+
+        let lessons = [];
+        let currentLesson = null;
+
+        async function init() {
+            lessons = await query('lessons', 'order=id.asc');
+            const versions = await query('versions', 'select=lesson_id,id', );
+
+            // Count versions per lesson
+            const versionCounts = {};
+            versions.forEach(v => { versionCounts[v.lesson_id] = (versionCounts[v.lesson_id] || 0) + 1; });
+            lessons.forEach(l => l._versionCount = versionCounts[l.id] || 0);
+
+            document.getElementById('stats').textContent =
+                `${lessons.length} שיעורים | ${versions.length} גרסאות`;
+
+            renderList();
+        }
+
+        function renderList() {
+            const chapter = document.getElementById('chapterFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const search = document.getElementById('search').value;
+
+            let filtered = lessons;
+            if (chapter) filtered = filtered.filter(l => l.chapter === chapter);
+            if (status) filtered = filtered.filter(l => l.status === status);
+            if (search) filtered = filtered.filter(l =>
+                (l.human_title || '').includes(search) || (l.human_body || '').includes(search) || l.id.includes(search)
+            );
+
+            const list = document.getElementById('lessonList');
+            list.innerHTML = filtered.map(l => `
+                <div class="lesson-item ${currentLesson?.id === l.id ? 'active' : ''}" onclick="selectLesson('${l.id}')">
+                    <span class="id">${l.id}</span>
+                    <span class="title">${(l.human_title || '').substring(0, 60)}</span>
+                    ${l._versionCount ? `<span class="badge has-versions">${l._versionCount} גרסאות</span>` : ''}
+                    ${l.status === 'empty' ? '<span class="badge empty">ריק</span>' : ''}
+                    ${l.status === 'finalized' ? '<span class="badge finalized">סופי</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        async function selectLesson(id) {
+            currentLesson = lessons.find(l => l.id === id);
+            renderList();
+
+            const sources = await query('lesson_sources', `lesson_id=eq.${encodeURIComponent(id)}&order=footnote_number.asc`);
+            const versions = await query('versions', `lesson_id=eq.${encodeURIComponent(id)}&order=version_number.asc`);
+
+            const content = document.getElementById('content');
+
+            let html = '';
+
+            // Sources panel
+            html += `<div class="sources-panel">
+                <h3>מקורות (${sources.length})</h3>
+                ${sources.map(s => `
+                    <div class="source-item ${s.source_type === 'supporting' ? 'supporting' : ''}">
+                        <span class="sefer">${s.source_type === 'supporting' ? '@ ' : ''}${s.sefer} ${s.location ? `(${s.location})` : ''}</span>
+                        <div class="raw">${s.raw_text}</div>
+                    </div>
+                `).join('')}
+            </div>`;
+
+            // Comparison grid
+            html += '<div class="comparison">';
+
+            // Human version
+            html += `<div class="panel human">
+                <h3>גרסת יואל (מקור)</h3>
+                <div class="label">כותרת</div>
+                <div class="title-text">${currentLesson.human_title || '(ריק)'}</div>
+                <div class="label">גוף</div>
+                <div class="body-text">${currentLesson.human_body || '(ריק)'}</div>
+                <div style="margin-top:12px;font-size:11px;color:#888">סטטוס: ${currentLesson.status}</div>
+            </div>`;
+
+            // AI versions
+            if (versions.length === 0) {
+                html += `<div class="panel ai">
+                    <h3>גרסאות AI</h3>
+                    <div class="empty-state" style="padding:30px">
+                        <p>אין עדיין גרסאות AI</p>
+                    </div>
+                </div>`;
+            } else {
+                const v = versions[0]; // Show first by default
+                html += renderVersion(v, versions);
+            }
+
+            html += '</div>';
+
+            // Context
+            if (currentLesson.context_before || currentLesson.context_after) {
+                html += `<div class="sources-panel">
+                    <h3>הקשר</h3>
+                    ${currentLesson.context_before ? `<div class="source-item"><span class="sefer">לפני:</span><div class="raw">${currentLesson.context_before}</div></div>` : ''}
+                    ${currentLesson.context_after ? `<div class="source-item"><span class="sefer">אחרי:</span><div class="raw">${currentLesson.context_after}</div></div>` : ''}
+                </div>`;
+            }
+
+            content.innerHTML = html;
+        }
+
+        function renderVersion(v, allVersions) {
+            const cls = v.is_positive_example ? 'positive' : v.is_negative_example ? 'negative' : '';
+            return `<div class="panel ai ${cls}">
+                <h3>גרסת AI ${v.is_positive_example ? '✓' : v.is_negative_example ? '✗' : ''}</h3>
+                ${allVersions.length > 1 ? `
+                    <div class="version-tabs">
+                        ${allVersions.map((ver, i) => `
+                            <div class="version-tab ${ver.id === v.id ? 'active' : ''} ${ver.is_positive_example ? 'positive' : ver.is_negative_example ? 'negative' : ''}"
+                                 onclick="showVersion(${ver.id})">
+                                v${ver.version_number}
+                            </div>
+                        `).join('')}
+                    </div>` : ''}
+                <div class="label">כותרת</div>
+                <div class="title-text">${v.generated_title || '(ריק)'}</div>
+                <div class="label">גוף</div>
+                <div class="body-text">${v.generated_body || '(ריק)'}</div>
+                ${v.score_overall ? `<div class="scores">
+                    <div class="score"><div class="value">${v.score_source_fidelity || '-'}</div><div class="name">נאמנות</div></div>
+                    <div class="score"><div class="value">${v.score_iron_law || '-'}</div><div class="name">חוקי ברזל</div></div>
+                    <div class="score"><div class="value">${v.score_style || '-'}</div><div class="name">סגנון</div></div>
+                    <div class="score"><div class="value">${v.score_bombshell || '-'}</div><div class="name">פצצה</div></div>
+                    <div class="score"><div class="value">${v.score_overall || '-'}</div><div class="name">כללי</div></div>
+                </div>` : ''}
+                ${v.evaluation_notes ? `<div class="eval-notes">${v.evaluation_notes}</div>` : ''}
+                <div style="margin-top:8px;font-size:11px;color:#888">${v.model || ''} | ${new Date(v.created_at).toLocaleDateString('he')}</div>
+            </div>`;
+        }
+
+        async function loadSkillExamples() {
+            const examples = await query('skill_examples', 'order=id.asc');
+            const content = document.getElementById('content');
+
+            let html = '<h2 style="margin-bottom:20px;color:#4a2c1a">דוגמאות מיומנות (${examples.length})</h2>';
+
+            examples.forEach((ex, i) => {
+                html += `<div style="margin-bottom:30px">
+                    <h3 style="color:#4a2c1a;margin-bottom:8px">${i+1}. ${ex.category} — ${ex.rule_reference || ''}</h3>
+                    ${ex.source_text ? `<div class="sources-panel"><h3>מקור</h3><div class="source-item"><div class="raw">${ex.source_text.substring(0, 300)}${ex.source_text.length > 300 ? '...' : ''}</div></div></div>` : ''}
+                    <div class="comparison">
+                        <div class="panel ai negative">
+                            <h3>✗ גרסה שגויה</h3>
+                            <div class="body-text">${ex.bad_version || ''}</div>
+                            <div class="eval-notes">${ex.bad_reason || ''}</div>
+                        </div>
+                        <div class="panel ai positive">
+                            <h3>✓ גרסה נכונה</h3>
+                            <div class="body-text">${ex.good_version || ''}</div>
+                            <div class="eval-notes">${ex.good_reason || ''}</div>
+                        </div>
+                    </div>
+                    ${ex.conversation_context ? `<div class="eval-notes" style="margin-bottom:10px"><strong>יואל:</strong> ${ex.conversation_context}</div>` : ''}
+                </div>`;
+            });
+
+            content.innerHTML = html;
+        }
+
+        // Event listeners
+        document.getElementById('chapterFilter').addEventListener('change', renderList);
+        document.getElementById('statusFilter').addEventListener('change', renderList);
+        document.getElementById('search').addEventListener('input', renderList);
+
+        init();
+    </script>
+</body>
+</html>
