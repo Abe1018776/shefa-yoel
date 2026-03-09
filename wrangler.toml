@@ -1,0 +1,5 @@
+name = "shefa-yoel"
+compatibility_date = "2024-09-25"
+
+[site]
+bucket = "./public"
