@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f4f2ed;
+  --surface: #ffffff;
+  --surface2: #f9f7f3;
+  --surface3: #edeae3;
+  --border: #d5d0c6;
+  --text: #1a1a1a;
+  --text2: #666660;
+  --accent: #8b6914;
+  --accent2: #a67c1a;
+  --accent-bg: #fdf6e3;
+  --blue: #2a5a8b;
+  --blue-bg: #eef3fa;
+  --purple: #6a4a8b;
+  --purple-bg: #f3eef8;
+  --red: #a04040;
+}
+
+body {
+  font-family: 'Noto Sans Hebrew', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
