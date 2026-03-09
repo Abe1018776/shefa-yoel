@@ -24,10 +24,14 @@
 
 ---
 
-## The Core Pattern
+## The Core Patterns
 
-Every numbered paragraph follows this emotional arc:
-1. **Name the doubt/excuse** → 2. **State it clearly** → 3. **Knock it down** → 4. **Land the punchline**
+Based on analysis of all 119 lessons, there are four body patterns (in order of frequency):
+
+1. **ELABORATED STATEMENT (49%)** — One long multi-clause sentence that develops the title's claim. Opens with a declaration, builds through comma-separated clauses, lands with the strongest claim.
+2. **STANDALONE STATEMENT (25%)** — A shorter declarative statement, often opening a new section. Core claim → amplification → consequence.
+3. **CONTINUATION (23%)** — Opens with a vav-connector (`וכן`, `ולפיכך`, `ומי ש`), building on the previous lesson.
+4. **REASSURANCE / DOUBT-KNOCKDOWN (3%)** — The rare pattern: Name the doubt → State it → Knock it down → Punchline. Only when the source EXPLICITLY addresses a person's excuse.
 
 ---
 
@@ -282,3 +286,76 @@ If any of these apply — COMBINE into one escalating point with `ובפרט` as
 - `באופן כללי` (academic)
 - `יש לציין ש` (academic)
 - Any modern Hebrew terminology
+
+---
+
+## Example 7: WORKED — Complex Yiddish Multi-Source Synthesis (5 footnotes → 1 lesson)
+
+This is the hardest transformation pattern: multiple Yiddish sources, each with different angles, compressed into one Hebrew paragraph.
+
+### The Raw Sources (all Yiddish, from דברות קודש):
+
+**FN32:** Every time you study Torah, the Shechina rests opposite you... you don't know how precious each moment is ("מ'ווייסט נישט ווי טייער דאס איז, יעדע מינוט און יעדע רגע")
+
+**FN33:** When you lose that, when you waste the times you could study... how great the loss — like brothers who couldn't answer Joseph. Supporting: the Chovos Halevavos parable about someone given diamonds who throws them away
+
+**FN34:** The Vilna Gaon's teaching about "din v'cheshbon" — first judged for sins, then an accounting for what could have been done during that time
+
+**FN35:** Even the wicked will be resurrected to SEE what those who served God merited — that itself is the greatest punishment
+
+**FN36:** The Midrash about "Woe to us from the day of judgment, woe from the day of rebuke" — Joseph's brothers couldn't answer, how much more when God rebukes
+
+### The Output:
+
+**Title:** `כמה גדול יקרת כל רגע ורגע שעוסק בתורה:`
+
+**Body:** `ובזה יתעורר לב האדם להשיג יקרת כל רגע ורגע שעוסק בתורה, כי בכל פעם שעוסק בתורה שכינה שרויה כנגדו. וכמה גדול ההפסד כשמבטלין מדברי תורה ומאבדין השראת השכינה בידים. וזה יהיה תביעה גדולה על האדם ליום הדין, על שהפסיד בידים את המדרגה הגדולה הלזו, כי לעתיד לבא מראין לו לאדם את כל המדריגות שהיה יכול לזכות אליהם, וזה גופא הוא התוכחה היותר גדולה, שיראה במו עיניו את כל הגדולה שהפסיד במו ידיו.`
+
+### What Happened:
+
+1. **5 Yiddish footnotes → 3 Hebrew sentences:**
+   - Sentence 1 (from FN32): preciousness of each moment + Shechina
+   - Sentence 2 (from FN33): the loss of wasting time
+   - Sentence 3 (from FN34+35+36): the Day of Judgment consequence
+
+2. **What was OMITTED:** Diamonds parable, Vilna Gaon's din/cheshbon teaching, Joseph's brothers story, the Midrash about rebuke. Only the CONCLUSIONS survived.
+
+3. **What was ADDED:** `ובזה יתעורר לב האדם` — motivational frame (the human's own connector). The poetic ending `שיראה במו עיניו את כל הגדולה שהפסיד במו ידיו` — the human's own formulation capturing the emotional climax of all those sources.
+
+4. **Yiddish → Hebrew:** "מ'ווייסט נישט ווי טייער דאס איז" → `יקרת כל רגע ורגע`. The conversational Yiddish becomes formal Hebrew. The FEELING is preserved; the register is transformed.
+
+---
+
+## Example 8: WORKED — Direct Extraction from a Drasha (Pattern 4)
+
+### The Raw Source:
+
+Long dvar Torah asking why Torah is called "תבלין" for the yetzer hara. Spice makes food taste BETTER — so how does Torah "spice" the yetzer hara? The Rebbe answers: for real tzaddikim, Torah actually transforms the yetzer hara into a yetzer tov — it makes it "taste good."
+
+### The Output:
+
+**Title:** `יותר מזה הוא כח התורה להמתיק היצה"ר ולהפכו ליצר טוב:`
+
+**Body:** `ויותר מזה גדול כח קדושת התורה עד מאד, להמתיק את היצר הרע ולהפכו ליצר טוב, שיסייע לו בעבודת הבורא.`
+
+### What Happened:
+
+The entire kushya (why "תבלין"?), the proof from Kiddushin, the explanation — all dropped. Only the practical result: Torah can FLIP the yetzer hara. The title uses `יותר מזה` because it escalates from the previous lesson (which said Torah fights the yetzer hara — this says it TRANSFORMS it).
+
+---
+
+## Example 9: WORKED — Back-Reference / Flip Side
+
+### The Raw Source:
+
+FN15 says: "ראה לעיל מדברי יואל (מהדו"ת, נשא עמ' רלה)" — "see above," referencing a source already used in lesson א.1.4 (which taught: one who clings to Torah has precedence even over angels — "זכה אומרים לו אתה קדמת").
+
+### The Output:
+
+**Title:** `וח"ו אם לא זכה לעסוק בתורה אין לו שום חשיבות בעולם:`
+
+**Body:** `אבל אם לא זכה לעסוק בתורה, אין לו שום חשיבות ומעלה, ואומרים לו יתוש קדמך, כי אכן היה האדם מאוחר ביצירתו לכל אחד.`
+
+### What Happened:
+
+No new source text — the human went back to the SAME source and took the OTHER half of the teaching (the "לא זכה" side). `אבל` connector signals the contrast with the previous lesson. The body is entirely the human's formulation of the flip side, staying within what the source says.
