@@ -5,6 +5,24 @@ description: "Synthesize raw Torah sources (Divrei Yoel, Divros Kodesh, etc.) in
 
 # שפע יואל — Lesson Synthesis Skill
 
+## What This Project Is
+
+**שער התורה** is a Hebrew-language sefer (book) that presents the Torah teachings of Rebbe Yoel Teitelbaum zt"l, the Satmar Rebbe, in a two-layer format:
+
+- **TOP LAYER** = Clean Hebrew lessons: a bold descriptive title + a single flowing paragraph that states the Rebbe's teaching as a practical principle
+- **BOTTOM LAYER** = Footnotes containing the full original source texts (in Hebrew or Yiddish), untouched
+
+The raw material comes from the Rebbe's published works:
+- **דברי יואל** — written Torah commentary (Hebrew)
+- **דברות קודש** — transcribed oral discourses (mostly Yiddish)
+- **קדושת יואל**, **שו"ת דברי יואל**, **כתבי יואל**, **טיב לבב** — other collections
+
+The book is organized into chapters (פרקים), each with a topic (e.g., כח התורה הקדושה). Within each chapter, lessons are numbered with Hebrew letters (א, ב, ג...) and grouped under section headings. Each lesson has one or more footnotes pointing to the original sources.
+
+**Your job:** Take raw source texts from the Rebbe and produce the top-layer lesson — the title and body — while the original source stays in the footnote. You are NOT summarizing. You are EXTRACTING the practical teaching from scholarly Torah discourse.
+
+---
+
 ## IRON LAW #1 — DO NOT PUT WORDS IN THE REBBE'S MOUTH
 
 **This is the most important rule. Every other rule is secondary.**
@@ -107,6 +125,65 @@ In all other cases, the human freely rephrases.
 
 Specific names of Amoraim or Rishonim (`רבנן דתמן בשם ר' יצחק דהכא`) become generic `אמרו חז"ל`. Occasionally a well-known authority is kept (e.g., `כתב הרמב"ם`) when it serves the argument, but this is rare.
 
+### The Six Transformation Patterns
+
+Every source-to-lesson conversion follows one of these patterns:
+
+**PATTERN 1: DIRECT EXTRACTION** — The Rebbe's own conclusion sentence IS the lesson.
+
+Look for signal words: `ונמצא`, `נמצא`, `והמורם מזה`, `ברור ש`, `עיקר`. Lift the conclusion, drop the setup and proof.
+
+> **Source:** Long dvar Torah starting with "בראשית ברא אלקים, ואמרו רז"ל...", arriving at: "ונמצא, דכל עיקר בריאת העולם היה בשביל התוה"ק, וגם קיומו של עולם תלוי ועומד בקבלת התורה, ומבלעדי התוה"ק אין העולם יכול להתקיים ולעמוד", then continuing with a proof from Shabbos 88.
+>
+> **Lesson title:** `יסוד ושורש בריאת וקיום העולם:`
+> **Lesson body:** `עיקר בריאת העולם היה בשביל התורה הקדושה, וגם קיומו של עולם תלוי ועומד בזכות התורה, ומבלעדי התורה אין העולם יכול להתקיים ולעמוד.`
+>
+> What happened: The "ונמצא" sentence was lifted near-verbatim. Setup (pasuk, Rashi) dropped. Proof (Shabbos 88) dropped. Abbreviation התוה"ק expanded to התורה הקדושה.
+
+**PATTERN 2: PERSONALIZING A COSMIC STATEMENT** — The Rebbe states a truth about the world; you bring it down to the individual.
+
+> **Source (primary):** "עיקר החיות הוא ע"י התוה"ק, וזולת זה לא יצוייר חיים..."
+> **Source (supporting):** "התורה הקדושה היא חיותן של ישראל... ומבלעדי התוה"ק אין כלום"
+>
+> **Lesson body:** `וכן הוא אצל כל אחד ואחד מישראל, שעיקר החיות שלו הוא ע"י התורה, ומבלעדי התורה אין לו כלום, ואינו בגדר חיים כלל, ואין שום חיות ותענוג בכל שאר עניני העולם.`
+>
+> What happened: The previous lesson was about the WORLD. The human PIVOTS to the individual with the invented connector `וכן הוא אצל כל אחד ואחד מישראל`. The proof about "אם מקבלים אתם את התורה מוטב" — dropped.
+
+**PATTERN 3: SYNTHESIZING MULTIPLE SOURCES** — 2-3 footnotes say variations of the same point; you write ONE unified lesson.
+
+> **Source 1:** "יש שני דברים המעמידים את ישראל בזמן הגלות, א' חכמת התורה..."
+> **Source 2:** "ברור, שרק כח התורה הוא התריס לעמוד בפני הקמים על ישראל"
+> **Source 3:** Long dvar Torah about "הקול קול יעקב" — when Israel learns Torah, enemies can't touch them
+>
+> **Lesson body:** `ואין לישראל קיום בזמן הגלות אלא בכח התורה, אשר זה נותן להם הקיום וההעמדה לעמוד בפני כל קשיי וצער הגלות, ובפני כל הנלחמים נגדם. ובזמן שישראל עוסקים בתורה כראוי, אינם צריכים לעשות שום פעולה להתגבר על שונאיהם, כי ממילא אין יכולים לשלוט בהם.`
+>
+> What happened: Each source contributed one idea. Source 3's full dvar Torah (kushya on the pasuk, hesped context) — all dropped. Only practical results survived.
+
+**PATTERN 4: EXTRACTING THE PRACTICAL CONSEQUENCE FROM A DRASHA** — A long speech or dvar Torah has a deep intellectual point; you pull out only what it means for daily life.
+
+> **Source:** Long Yiddish speech about the Midrash that שכחה was given as a gift. David HaMelech said "לעולם לא אשכח פקודיך כי בם חייתנו." The Rebbe explains: David didn't NEED forgetting because Torah was his LIFE.
+>
+> **Lesson body:** `ואחר שידע האדם אמיתות זו, וישריש בנפשו שבלי התורה אין לו כלום, לא יהא צריך זירוז על עסק התורה, ולא יפסיק מלימוד התורה לעולם, שהרי יודע שבזה תלוי כל חיותו. וממילא לא יצטרך למדת השכחה שתביאנו להתמדת התורה, ויכול להתברך לזכור את תלמודו לעולם.`
+>
+> What happened: The entire Midrash — dropped. The Yiddish explanation — dropped. What survived: the PRACTICAL IMPLICATION. The human ADDED the connector `ואחר שידע האדם אמיתות זו` tying back to previous lessons.
+
+**PATTERN 5: COMBINING A PRINCIPLE WITH A PRACTICAL INSTRUCTION** — One source provides the IDEA, another provides the ACTION.
+
+> **Source 1 (dvar Torah):** "אי אפשר לעשות תשובה מעולה ושלימה בלי תורה" — embedded in a long discussion
+> **Source 2 (the Rebbe's letter):** "ירבה בתורה ובתפלה ובצדקה כפי כוחו ויהיה בענוה בפני כל, ואל יבוש מפני המלעיגים עליו, זהו עיקר התשובה, ואם ככה יעשה אז ושב ורפא לו"
+>
+> **Lesson body:** `ודע, כי אי אפשר לעשות תשובה שלימה בלי כח התורה. אלא, ירבה בתורה ובתפלה ובצדקה כפי כוחו ויהיה בענוה בפני כל, ואל יבוש מפני המלעיגים עליו, זהו עיקר התשובה, ואם ככה יעשה אז ושב ורפא לו.`
+>
+> What happened: Source 1 gave the PRINCIPLE (first sentence). Source 2 gave the EXACT ACTION STEPS (rest — near-verbatim from the letter). The entire drasha from Source 1 — dropped. The personal context of the letter — dropped and universalized.
+
+**PATTERN 6: DOUBT-KNOCKDOWN** — The Rebbe addresses potential discouragement; you frame the lesson as demolishing an inner doubt.
+
+> **Source:** Yiddish speech about 60 rikva oisios in the Torah, each being the root of one Jewish neshama.
+>
+> **Lesson body:** `אל יפול לב האדם לומר, שכל המבואר כאן בכח קדושת התורה אינו נוגע לאנשים פשוטים כערכי, כי אם לבני עלי'. טעות גדולה בידו, אלא צריך כאו"א מישראל לדעת, שיש ששים ריבוא אותיות לתורה, וכל אות הוא שורש לנשמה אחת מישראל...`
+>
+> What happened: The human INVENTED the opening doubt: "אל יפול לב האדם לומר שכל המבואר כאן... אינו נוגע לאנשים פשוטים כערכי" — the Rebbe didn't say this. The human anticipated the reader's objection after 30+ lessons about Torah's power, then used the Rebbe's content as the ANSWER. This is the most creative pattern — and the rarest (3%).
+
 ---
 
 ## The Synthesis Process
@@ -120,15 +197,23 @@ Read every word. Ask:
 
 **Critical Rule**: Only the teaching's conclusion becomes a lesson. The drasha, the proof-text, the sugya, the story — all stay in the footnotes.
 
-### Step 2: Check for Escalation Across Sources
+### Step 2: Decide — Split, Combine, or One-to-One?
 
-**Before drafting, look across ALL sources and ask: "Do any of these sources ESCALATE each other?"** If Source B intensifies Source A's claim, COMBINE them into one escalating point using `ובפרט` as the hinge.
+Before drafting, determine how sources map to lessons:
 
-Key signals to combine:
-- Source B addresses the same theme from a more extreme angle
-- Source B says "especially in our generation" or "especially now"
-- Source B removes alternatives (fasting, korbanos, etc.) leaving only Torah
-- Source B would feel weaker standing alone without Source A's foundation
+**COMBINE multiple sources → 1 lesson when:**
+- They say variations of the same practical point from different angles (Pattern 3)
+- Source B ESCALATES Source A's claim — use `ובפרט` as the hinge
+- One source provides a principle and another provides the action (Pattern 5)
+- Signals: same theme from a more extreme angle; "especially in our generation"; removes alternatives leaving only Torah; would feel weaker alone
+
+**SPLIT 1 source → multiple lessons when:**
+- The source contains genuinely DIFFERENT practical takeaways (not just different facets of one idea)
+- The source addresses multiple topics that belong in different sections
+- This is rare — most sources yield exactly one lesson
+
+**One-to-one (most common):**
+- One source, one clear teaching, one lesson (Patterns 1, 2, 4, 6)
 
 ### Step 3: Draft the Title
 
