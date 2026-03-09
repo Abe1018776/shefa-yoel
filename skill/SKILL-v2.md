@@ -7,29 +7,48 @@ description: "Synthesize raw Torah sources into clean, flowing lessons in the ש
 
 ---
 
-## 1. The Book
+## 1. What We Are Building
 
-**שפע יואל** builds a cohesive school of thought from the teachings of Rebbe Yoel Teitelbaum zt"l, the Satmar Rebbe. It works like the Shulchan Aruch or the Rambam's Mishneh Torah: vast Torah discourse is curated, distilled, and organized into practical, structured lessons — each backed by its original sources.
+We are building a **cohesive school of thought** from the teachings of Rebbe Yoel Teitelbaum zt"l, the Satmar Rebbe.
 
-The raw material comes from the Rebbe's published works: **דברי יואל** (written Hebrew commentary), **דברות קודש** (transcribed oral discourses, mostly Yiddish), **קדושת יואל**, **שו"ת דברי יואל**, **כתבי יואל**, **טיב לבב**, and other collections.
+The Rebbe left behind thousands of pages of Torah — written commentaries in **דברי יואל**, transcribed oral discourses in **דברות קודש** (mostly Yiddish), responsa in **שו"ת דברי יואל**, and more across **קדושת יואל**, **כתבי יואל**, **טיב לבב**, and other collections. Scattered throughout these works is a complete worldview — the Rebbe's way of thinking about Torah, about life, about what a Yid should know and do. But it's buried in drashos, stories, pilpul, and lengthy speeches. Nobody has ever pulled it all together.
 
-The book is organized into **chapters** (פרקים), each with a topic (e.g., כח התורה הקדושה). Within each chapter, lessons are grouped under **sections** with headings, and numbered with Hebrew letters (א, ב, ג...). Lessons chain together in a deliberate flow within each section.
+That's what this project does. We take the Rebbe's teachings on a specific topic — say, the power of Torah — and we curate every relevant source. Then we extract the practical lessons: what did the Rebbe actually hold? What did he want a Yid to know? We compress it all into individual, clean lessons and organize them into chapters where one lesson flows into the next, each backed by its original sources.
 
----
+This is exactly what the creators of the Shulchan Aruch did. The Beis Yosef curated everything the poskim ever said about a topic — prayer, Shabbos, kashrus — and compressed it into practical halachos, each backed by Talmudic sources, organized in a structured order. The Rambam did the same with the entire oral Torah. We are doing this with the Satmar Rebbe's hashkafa.
 
-## 2. Your Role
-
-You are producing **individual lessons**. Each lesson has:
-- A **title** — a 5-9 word descriptive headline ending with `:`
-- A **body** — one flowing paragraph in elevated Lashon Hakodesh
-
-You are NOT summarizing. You are NOT writing a dvar Torah. You are EXTRACTING the practical teaching — the guideline, the principle, the rule — from scholarly Torah discourse, and stating it cleanly.
-
-Think of it this way: the Rebbe gave a long speech full of pesukim, drashos, stories, and proofs. Somewhere inside is a single practical point — what a Yid should KNOW or DO. Your job is to find that point and state it as a clean, flowing sentence.
+We have already completed several chapters on the topic of כח התורה. We compiled hundreds of sources, extracted practical lessons, and structured them into chapters where lessons follow one another in a deliberate arc — each supported by specific sources, each building on what came before.
 
 ---
 
-## 3. Your Input
+## 2. The Structure
+
+The book is called **שפע יואל** (subtitled **שער התורה** for the Torah section). It is organized into:
+
+- **Chapters** (פרקים) — each focused on a topic (e.g., כח התורה הקדושה וסגולתה)
+- **Sections** — within each chapter, lessons are grouped under headings (e.g., כי הוא חייך ואורך ימיך)
+- **Lessons** — numbered with Hebrew letters (א, ב, ג...), each consisting of a **title** and a **body**
+- **Sources** — one or more original texts from the Rebbe's works that back each lesson
+
+The lessons within a section chain together in a deliberate flow: the first lesson plants the section's thesis, subsequent lessons build on it with connectors, the argument escalates in intensity, and the section lands on a practical conclusion.
+
+---
+
+## 3. Your Role
+
+You receive the raw source texts and the surrounding context, and you produce the lesson — a **title** and a **body**.
+
+You are NOT summarizing. You are NOT writing a dvar Torah. You are doing what the Beis Yosef did: taking lengthy scholarly Torah discourse and extracting the single practical point — the guideline, the principle, the rule — and stating it cleanly in one flowing sentence.
+
+The Rebbe gave a long speech full of pesukim, drashos, stories, and proofs. Somewhere inside is a single practical point — what a Yid should KNOW or what is TRUE about Torah. Your job is to find that point and state it as a clean, flowing paragraph in elevated Lashon Hakodesh.
+
+**Your output is exactly two things:**
+- **title** — a 5-9 word descriptive headline ending with `:`
+- **body** — one flowing paragraph
+
+---
+
+## 4. Your Input
 
 You will always receive:
 
@@ -39,19 +58,19 @@ You will always receive:
 4. **CHAPTER and SECTION** — the chapter topic, section heading, and where this lesson sits.
 5. **POSITION** — whether this is a section opener (first lesson), a middle lesson, or a section closer.
 
-Use ALL of this context. The lesson before tells you what connector to open with. The lesson after tells you where the argument is heading. The section heading tells you the theme.
+Use ALL of this context. The lesson before tells you what connector to open with. The lesson after tells you where the argument is heading. The section heading tells you the theme. This lesson must read as a natural continuation of the argument — not as an isolated point.
 
 ---
 
-## 4. The Final Objective
+## 5. The Quality Bar
 
-The finished book should read as one continuous, flowing argument — not a collection of isolated points. Each lesson leads naturally to the next. A reader should be able to open any section and read through it like a father explaining Torah to his son: clear, warm, building in intensity, landing on something powerful.
+This book will be published and sold to hundreds of thousands of people. Every sentence matters.
 
-The quality bar: this book will be published and sold to hundreds of thousands of people. Every sentence matters.
+The finished book should read as one continuous, flowing argument. A reader should be able to open any section and read through it like a father explaining Torah to his son: clear, warm, building in intensity, landing on something powerful. Each lesson leads naturally to the next. No lesson should feel like it was written in isolation.
 
 ---
 
-## 5. The Three Iron Laws
+## 6. The Three Iron Laws
 
 ### IRON LAW #1 — DO NOT PUT WORDS IN THE REBBE'S MOUTH
 
@@ -87,7 +106,7 @@ The lesson states what to KNOW, what to DO, or what is TRUE. It does not explain
 
 ---
 
-## 6. How to Transform Sources into Lessons
+## 7. How to Transform Sources into Lessons
 
 ### What to STRIP from the source:
 - **Citations:** `כדכתיב`, `כמ"ש`, `שנאמר` — unless a Chazal IS the point (`כדאיתא בחז"ל בשביל התורה שנקרא ראשית`)
@@ -111,45 +130,40 @@ The lesson states what to KNOW, what to DO, or what is TRUE. It does not explain
 
 ---
 
-## 7. Title Rules
+## 8. The Writing Style
 
+### The Title
 - 5-9 words, always ends with `:`
-- A thesis statement, not an instruction. 92% are descriptive
+- A thesis statement, not an instruction — 92% of titles describe what IS, not what to DO
 - Prefer personal framing over abstract doctrine:
-  - ✅ `מי שיש אצלו כח התורה מגיע לו הכל:`
-  - ❌ `מעלת התורה קודמת לכל המעלות:`
+  - ✅ `מי שיש אצלו כח התורה מגיע לו הכל:` — about the person
+  - ❌ `מעלת התורה קודמת לכל המעלות:` — abstract, impersonal
 - Must capture a SPECIFIC claim. "Torah is the foundation of creation" = specific. "Amazing things about Torah" = vague
 
----
-
-## 8. Body Rules
-
+### The Body
 - **ONE long flowing sentence** — ~46 words, 4-5 commas, rarely more than one period
 - Comma-separated clauses that build, qualify, and resolve into one unified statement
-- The paragraph must BREATHE — like a father talking to his son
+- The paragraph must BREATHE — like a father talking to his son, not like an academic paper
 - **Find the BOMBSHELL**, not the summary. The bombshell is usually a CONTRAST: "Sins that destroyed the entire world — Torah gives you a tikun even from those"
 - **Keep the subject right.** If the topic is כח התורה, the subject is TORAH, not the person's suffering
 
-**Language:**
-- Elevated Lashon Hakodesh ONLY
-- NEVER use: `בהחלט`, `למעשה`, `בעצם`, `פשוט`, `באופן כללי`, `יש לציין ש`
-
----
-
-## 9. Section Flow
-
-Lessons chain together in an arc:
+### The Section Arc
+Lessons within a section chain together in a deliberate arc:
 
 1. **Opener** — standalone statement, no connector. Plants the section's thesis
 2. **Chain** — subsequent lessons connect via `וכן`, `ולפיכך`, `ומי ש`, `גם`, `אף`
 3. **Escalation** — builds intensity: `ולא זו בלבד`, `ויותר מזה`, `ובפרט`
 4. **Landing** — ends with practical conclusion: `ולפיכך`, `אשר על כן`, `נמצא`
 
-**Always consider position.** Section opener = standalone. Middle = connector from previous. Closer = practical conclusion.
+**Always consider position.** Section opener = standalone. Middle = connector flowing from the previous lesson. Closer = practical conclusion.
+
+### Language
+- Elevated Lashon Hakodesh ONLY. No modern Hebrew.
+- NEVER use: `בהחלט`, `למעשה`, `בעצם`, `פשוט`, `באופן כללי`, `יש לציין ש`
 
 ---
 
-## 10. Complete Examples — Source Input → Lesson Output
+## 9. Complete Examples — Source Input → Lesson Output
 
 These are real lessons from the book. Study the relationship between the sources and the output.
 
@@ -258,7 +272,7 @@ These are real lessons from the book. Study the relationship between the sources
 
 ---
 
-## 11. Quality Checklist
+## 10. Quality Checklist
 
 Before finalizing:
 
