@@ -250,6 +250,71 @@ defineTool(
   }
 );
 
+
+defineTool(
+  "get_generation_context",
+  "Get context for generating a lesson from scratch. Returns: the lesson BEFORE (title + body + sources), the lesson AFTER (title + body + sources), the current lesson's sources ONLY (no title/body to avoid bias), position info, and methodology. Use this when you want to write a fresh lesson without being influenced by the existing text.",
+  { lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.3" } },
+  ["lesson_id"],
+  async ({ lesson_id }) => {
+    const enc = encodeURIComponent(lesson_id);
+    const [lessons, sources, methodology] = await Promise.all([
+      sb(`lessons?id=eq.${enc}`),
+      sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
+      sb("content?key=eq.methodology_v2&select=value"),
+    ]);
+    if (!lessons?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
+    const lesson = lessons[0];
+
+    // Get all lessons in same section
+    const sectionLessons = await sb(
+      `lessons?chapter=eq.${encodeURIComponent(lesson.chapter)}&section_heading=eq.${encodeURIComponent(lesson.section_heading)}&select=id,point_number,human_title,human_body&order=point_number`
+    );
+
+    const idx = sectionLessons.findIndex((l: any) => l.id === lesson_id);
+    const total = sectionLessons.length;
+    const position = idx === 0 ? "opener" : idx === total - 1 ? "closer" : "middle";
+
+    // Get neighbor lessons with their sources
+    let lessonBefore = null;
+    if (idx > 0) {
+      const prev = sectionLessons[idx - 1];
+      const prevSources = await sb(`lesson_sources?lesson_id=eq.${encodeURIComponent(prev.id)}&order=footnote_number`);
+      lessonBefore = { id: prev.id, title: prev.human_title, body: prev.human_body, sources: prevSources };
+    }
+
+    let lessonAfter = null;
+    if (idx < total - 1) {
+      const next = sectionLessons[idx + 1];
+      const nextSources = await sb(`lesson_sources?lesson_id=eq.${encodeURIComponent(next.id)}&order=footnote_number`);
+      lessonAfter = { id: next.id, title: next.human_title, body: next.human_body, sources: nextSources };
+    }
+
+    return [{
+      type: "text",
+      text: JSON.stringify({
+        current_lesson: {
+          id: lesson.id,
+          chapter: lesson.chapter,
+          chapter_desc: lesson.chapter_desc,
+          section: lesson.section,
+          section_heading: lesson.section_heading,
+          point_number: lesson.point_number,
+          sources,
+        },
+        context: {
+          position,
+          position_index: idx + 1,
+          total_in_section: total,
+          lesson_before: lessonBefore,
+          lesson_after: lessonAfter,
+        },
+        methodology: methodology?.[0]?.value || "Not found",
+      }, null, 2),
+    }];
+  }
+);
+
 defineTool(
   "get_section_arc",
   "Get all lessons in a section to see the full arc: opener→chain→escalation→landing. Essential for maintaining flow when writing or editing any lesson in the section.",
