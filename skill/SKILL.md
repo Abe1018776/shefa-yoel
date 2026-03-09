@@ -72,9 +72,9 @@ This section describes what the human author ACTUALLY does when converting a sou
 
 ### What Gets STRIPPED from the Source
 
-1. **Parenthetical citations** — `כדכתיב (דברים ל')`, `כמ"ש`, `שנאמר`, `דכתיב` — removed in 60% of lessons. The lesson states the idea; the proof-text lives in the footnote.
+1. **Parenthetical citations** — `כדכתיב (דברים ל')`, `כמ"ש`, `שנאמר`, `דכתיב` — removed in 60% of lessons. The lesson states the idea; the proof-text lives in the footnote. **Exception:** A foundational or famous drasha may be retained with generic attribution (`כדאיתא בחז"ל`) when it IS the point, not just the proof. Example: `כדאיתא בחז"ל בשביל התורה שנקרא ראשית` — kept because "Torah = reishis" IS the teaching, not a proof-text for something else.
 2. **Names of seforim** — Rashi, Zohar, Midrash, Gemara references — removed in 30% of lessons. The lesson presents the conclusion, not who said it.
-3. **Drashos and hermeneutical derivations** — The source often includes the full drasha logic (e.g., "Bereishis means for the Torah which is called reishis..."). The lesson states ONLY the conclusion.
+3. **Drashos and hermeneutical derivations** — The source often includes the full drasha logic (e.g., "Bereishis means for the Torah which is called reishis..."). The lesson states ONLY the conclusion. **This includes narrative examples.** If the source proves its point through a story (Yaakov/Esav, Kehas/Gershon, etc.), strip the story entirely — keep only the abstract result. Example: a source about Yaakov not needing to buy the bechora because Torah supersedes it → lesson says only `מעלת התורה מוקדם היא לכל המעלות, ומעולה יותר אפילו ממעלת הבכורה` — no mention of Yaakov, Esav, bechora sale, or Kehas.
 4. **Historical and narrative context** — Stories, personal anecdotes, the back-and-forth of a sugya. Only the teaching point is kept.
 5. **Yiddish** — 55% of sources contain Yiddish. The lesson is ALWAYS in Hebrew. All Yiddish is fully translated/adapted.
 
@@ -112,6 +112,8 @@ The human adds **logical scaffolding** — connective and framing phrases that c
 - Adds bridging connectors (`ולפיכך`, `ונמצא ש`, `וממילא`)
 - The body is one unified statement; the source complexity lives in the footnotes
 - Compression ratio ranges from 3:1 to 12:1 (source text to body text)
+
+**CRITICAL: One clause per source.** When synthesizing 3-4 sources, give each source its own comma-clause in the sentence. Do NOT merge two sources that contribute distinct angles into a single clause. Example: if Source A says "Torah protects in galus" and Source B says "Torah brings miracles in galus" — these are TWO clauses, not one. The lesson should read: `...לעמוד בפני כל הנלחמים נגדם, ובזכות התורה נעשים נסים לישראל אף בזמן הגלות.` — each source gets its moment.
 
 ### When Sources Are Retained Verbatim
 
@@ -223,13 +225,20 @@ The title is NOT an instruction — it's a bold headline that tells the reader w
 
 **92% of actual titles are descriptive statements about what IS, not instructions about what to DO.**
 
+**Prefer personal framing over abstract doctrine.** When the source speaks about what happens to the PERSON who learns Torah, the title should reflect the person's experience, not the abstract principle.
+- ✅ `מי שיש אצלו כח התורה מגיע לו הכל:` — about the person
+- ❌ `מעלת התורה קודמת לכל המעלות:` — abstract, impersonal
+- ✅ `מי שדבוק בתוה"ק יש לו דמיון להקב"ה כביכול:` — about the person
+- ❌ `העוסק בתורה מתעצם בקדושתה:` — describes the mechanism, not the result
+
 Examples of REAL titles from the book (representative of the actual style):
 
 | ✅ Actual titles | Pattern |
 |---|---|
 | `יסוד ושורש בריאת וקיום העולם:` | States the foundational principle |
 | `בלי התורה אינו בגדר חיים כלל:` | States a stark reality |
-| `גדול עד מאד קדושת התורה:` | Declares Torah's greatness |
+| `מי שיש אצלו כח התורה מגיע לו הכל:` | Personal result — what the person gets |
+| `מי שדבוק בתוה"ק יש לו דמיון להקב"ה כביכול:` | Personal result — what the person becomes |
 | `עיקר שלימות התורה היא ע"י היראה:` | Identifies the key condition |
 | `כל התורה כולה נקראת על שם היראה:` | States a definitional fact |
 | `אין עריבות ונעימות כעריבות ונעימות התורה:` | Comparative claim |
@@ -332,6 +341,14 @@ Sections typically end with a practical conclusion:
 - `אשר על כן` (and therefore)
 - `וכל עיקר` (and the main thing is)
 - `נמצא` (it turns out)
+
+### 5. Recurring Coda Phrases
+The human reuses certain closing phrases across multiple lessons to tie them back to a bigger theme. These are stylistic signatures — when a lesson's conclusion matches one of these sentiments, use the phrase:
+- `וזהו הכבוד הגדול ביותר להתכבד בו` — used when the lesson is about the elevated status Torah gives a person
+- `ומבלעדי התורה אין העולם יכול להתקיים ולעמוד` — used when the lesson is about Torah sustaining existence
+- `ואינו בגדר חיים כלל` — used when the lesson is about Torah being life itself
+
+These codas create resonance across lessons. When you see the same closing sentiment in a source that appeared in a previous lesson, echo the same phrase.
 
 **Example arc (section א.4):**
 1. Statement (the Torah is the remedy)
