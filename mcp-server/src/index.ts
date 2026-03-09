@@ -521,21 +521,24 @@ defineTool(
 
 defineTool(
   "save_version",
-  "Save a new AI-generated version of a lesson",
+  "Save a new AI-generated version of a lesson, with optional evaluation comments",
   {
     lesson_id: { type: "string", description: "Lesson ID" },
     generated_title: { type: "string", description: "Generated title" },
     generated_body: { type: "string", description: "Generated body" },
+    evaluation_notes: { type: "string", description: "Optional evaluation comments from the user" },
   },
   ["lesson_id", "generated_title", "generated_body"],
-  async ({ lesson_id, generated_title, generated_body }) => {
+  async ({ lesson_id, generated_title, generated_body, evaluation_notes }) => {
     const existing = await sb(
       `versions?lesson_id=eq.${encodeURIComponent(lesson_id)}&select=version_number&order=version_number.desc&limit=1`
     );
     const nextNum = existing?.length ? existing[0].version_number + 1 : 1;
+    const row: any = { lesson_id, version_number: nextNum, generated_title, generated_body, model: "claude-via-mcp" };
+    if (evaluation_notes) row.evaluation_notes = evaluation_notes;
     const data = await sb("versions", {
       method: "POST",
-      body: JSON.stringify({ lesson_id, version_number: nextNum, generated_title, generated_body, model: "claude-via-mcp" }),
+      body: JSON.stringify(row),
     });
     return [{ type: "text", text: JSON.stringify(data, null, 2) }];
   }
