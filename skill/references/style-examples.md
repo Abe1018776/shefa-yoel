@@ -24,10 +24,14 @@
 
 ---
 
-## The Core Pattern
+## The Core Patterns
 
-Every numbered paragraph follows this emotional arc:
-1. **Name the doubt/excuse** → 2. **State it clearly** → 3. **Knock it down** → 4. **Land the punchline**
+Based on analysis of all 119 lessons, there are four body patterns (in order of frequency):
+
+1. **ELABORATED STATEMENT (49%)** — One long multi-clause sentence that develops the title's claim. Opens with a declaration, builds through comma-separated clauses, lands with the strongest claim.
+2. **STANDALONE STATEMENT (25%)** — A shorter declarative statement, often opening a new section. Core claim → amplification → consequence.
+3. **CONTINUATION (23%)** — Opens with a vav-connector (`וכן`, `ולפיכך`, `ומי ש`), building on the previous lesson.
+4. **REASSURANCE / DOUBT-KNOCKDOWN (3%)** — The rare pattern: Name the doubt → State it → Knock it down → Punchline. Only when the source EXPLICITLY addresses a person's excuse.
 
 ---
 
