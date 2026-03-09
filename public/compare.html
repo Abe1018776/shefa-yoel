@@ -71,6 +71,34 @@
         .empty-state h2 { margin-bottom: 12px; }
 
         #loading { display: none; text-align: center; padding: 20px; color: #888; }
+
+        /* ── Generate Panel ── */
+        .gen-panel { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px; border-top: 3px solid #2a6b3d; }
+        .gen-panel h3 { font-size: 16px; color: #2a6b3d; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #d4c5a9; }
+        .gen-panel .gen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .gen-panel .neighbor-box { background: #f9f6f0; border-radius: 6px; padding: 12px; border-right: 3px solid #d4c5a9; }
+        .gen-panel .neighbor-box .nb-title { font-weight: bold; color: #4a2c1a; font-size: 13px; }
+        .gen-panel .neighbor-box .nb-body { font-size: 13px; color: #555; margin-top: 4px; line-height: 1.6; }
+        .gen-panel textarea { width: 100%; min-height: 120px; padding: 12px; border: 1px solid #d4c5a9; border-radius: 6px; font-family: inherit; font-size: 14px; line-height: 1.8; resize: vertical; direction: rtl; }
+        .gen-panel textarea:focus { outline: none; border-color: #2a6b3d; }
+        .gen-panel .toolbar { display: flex; gap: 10px; justify-content: center; margin: 14px 0; }
+        .gen-panel .toolbar button { padding: 10px 24px; font-size: 15px; }
+        .gen-panel .result-box { background: #f0f8f0; border: 2px solid #2a6b3d; border-radius: 8px; padding: 20px; margin-top: 16px; }
+        .gen-panel .result-title { font-size: 20px; font-weight: bold; color: #2a6b3d; margin-bottom: 8px; }
+        .gen-panel .result-body { font-size: 16px; line-height: 2; }
+        .gen-panel .gen-stats { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .gen-panel .gen-stat { background: #e8dcc8; padding: 3px 10px; border-radius: 6px; font-size: 12px; color: #555; }
+        .gen-panel .gen-stat b { color: #4a2c1a; }
+        .gen-panel .api-key-row { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
+        .gen-panel .api-key-row input { flex: 1; padding: 8px 12px; border: 1px solid #d4c5a9; border-radius: 6px; font-size: 14px; font-family: inherit; }
+        .gen-panel .api-key-row label { font-size: 13px; color: #888; white-space: nowrap; }
+        .gen-panel .context-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; margin-left: 8px; }
+        .gen-panel .ctx-opener { background: #d4edda; color: #155724; }
+        .gen-panel .ctx-middle { background: #cce5ff; color: #004085; }
+        .gen-panel .ctx-closer { background: #e2d5f0; color: #5a3d7a; }
+        .gen-hidden { display: none; }
+        .gen-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #d4c5a9; border-top-color: #2a6b3d; border-radius: 50%; animation: spin .6s linear infinite; vertical-align: middle; margin-right: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -96,6 +124,7 @@
         </select>
         <input type="text" id="search" placeholder="חיפוש..." style="width: 200px;">
         <button onclick="loadSkillExamples()">דוגמאות מיומנות</button>
+        <button class="generate" id="genToggleBtn" onclick="toggleGenerate()" style="display:none">מחולל</button>
     </div>
 
     <div class="main">
@@ -113,6 +142,7 @@
     <script>
         const SUPABASE_URL = 'https://idbvezfpkodmohebrwkc.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkYnZlemZwa29kbW9oZWJyd2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NzQ2MjIsImV4cCI6MjA4ODM1MDYyMn0.l3Y4NJuo8b4L1sQrf27C82dWMkQFDwuRFF4Wk93ZJqA';
+        const API = 'https://shefa-yoel-mcp.chezkynewemail.workers.dev';
 
         async function query(table, params = '') {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
@@ -121,14 +151,20 @@
             return res.json();
         }
 
+        async function api(path) {
+            const r = await fetch(API + path);
+            return r.json();
+        }
+
         let lessons = [];
         let currentLesson = null;
+        let genData = null;
+        let genMethodology = '';
 
         async function init() {
             lessons = await query('lessons', 'order=id.asc');
-            const versions = await query('versions', 'select=lesson_id,id', );
+            const versions = await query('versions', 'select=lesson_id,id');
 
-            // Count versions per lesson
             const versionCounts = {};
             versions.forEach(v => { versionCounts[v.lesson_id] = (versionCounts[v.lesson_id] || 0) + 1; });
             lessons.forEach(l => l._versionCount = versionCounts[l.id] || 0);
@@ -136,7 +172,18 @@
             document.getElementById('stats').textContent =
                 `${lessons.length} שיעורים | ${versions.length} גרסאות`;
 
+            const k = sessionStorage.getItem('claude_key');
+            if (k) document.getElementById('genApiKey') && (document.getElementById('genApiKey').value = k);
+
             renderList();
+
+            // Restore selected lesson from URL hash
+            if (location.hash) {
+                const savedId = decodeURIComponent(location.hash.slice(1));
+                if (savedId && lessons.find(l => l.id === savedId)) {
+                    selectLesson(savedId);
+                }
+            }
         }
 
         function renderList() {
@@ -165,13 +212,14 @@
 
         async function selectLesson(id) {
             currentLesson = lessons.find(l => l.id === id);
+            location.hash = encodeURIComponent(id);
             renderList();
+            document.getElementById('genToggleBtn').style.display = '';
 
             const sources = await query('lesson_sources', `lesson_id=eq.${encodeURIComponent(id)}&order=footnote_number.asc`);
             const versions = await query('versions', `lesson_id=eq.${encodeURIComponent(id)}&order=version_number.asc`);
 
             const content = document.getElementById('content');
-
             let html = '';
 
             // Sources panel
@@ -207,7 +255,7 @@
                     </div>
                 </div>`;
             } else {
-                const v = versions[0]; // Show first by default
+                const v = versions[0];
                 html += renderVersion(v, versions);
             }
 
@@ -221,6 +269,9 @@
                     ${currentLesson.context_after ? `<div class="source-item"><span class="sefer">אחרי:</span><div class="raw">${currentLesson.context_after}</div></div>` : ''}
                 </div>`;
             }
+
+            // Generate panel placeholder
+            html += '<div id="genPanel"></div>';
 
             content.innerHTML = html;
         }
@@ -254,6 +305,192 @@
             </div>`;
         }
 
+        // ── Generate Functions ──
+
+        async function mcpCall(method, args = {}) {
+            const r = await fetch(API + '/mcp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ jsonrpc: '2.0', id: Date.now(), method: 'tools/call', params: { name: method, arguments: args } })
+            });
+            const d = await r.json();
+            if (d.result?.content?.[0]?.text) return JSON.parse(d.result.content[0].text);
+            if (d.result?.isError) throw new Error(d.result.content?.[0]?.text || 'MCP error');
+            return d.result;
+        }
+
+        async function toggleGenerate() {
+            if (!currentLesson) return;
+            const panel = document.getElementById('genPanel');
+            if (panel.innerHTML) {
+                panel.innerHTML = '';
+                return;
+            }
+
+            panel.innerHTML = '<div class="gen-panel"><h3>מחולל שיעור</h3><p style="color:#888">טוען הקשר...<span class="gen-spinner"></span></p></div>';
+
+            try {
+                const data = await mcpCall('get_generation_context', { lesson_id: currentLesson.id });
+                genData = data;
+                genMethodology = data.methodology || '';
+                renderGenPanel(data, genMethodology);
+            } catch(e) {
+                panel.innerHTML = `<div class="gen-panel"><h3>מחולל שיעור</h3><p style="color:#c0392b">שגיאה: ${esc(e.message)}</p></div>`;
+            }
+        }
+
+        function renderGenPanel(data, meth) {
+            const ctx = data.context || {};
+            const lesson = data.current_lesson || data.lesson || {};
+            const bc = ctx.position === 'opener' ? 'ctx-opener' : ctx.position === 'closer' ? 'ctx-closer' : 'ctx-middle';
+
+            const savedKey = sessionStorage.getItem('claude_key') || '';
+
+            let html = `<div class="gen-panel">
+                <h3>מחולל שיעור — ${esc(data.lesson.id)}
+                    <span class="context-badge ${bc}">${ctx.position} (${ctx.position_index}/${ctx.total_in_section})</span>
+                </h3>
+
+                <div class="api-key-row">
+                    <label>Claude API Key</label>
+                    <input type="password" id="genApiKey" value="${esc(savedKey)}" placeholder="sk-ant-..." onchange="sessionStorage.setItem('claude_key', this.value)">
+                </div>
+
+                <div class="gen-grid">
+                    <div class="neighbor-box">
+                        <div style="font-size:11px;color:#888;margin-bottom:4px">שיעור קודם</div>
+                        ${ctx.lesson_before ? `<div class="nb-title">${esc(ctx.lesson_before.title || '')}</div><div class="nb-body">${esc((ctx.lesson_before.body || '').slice(0, 200))}</div>` : '<div style="color:#888">—</div>'}
+                    </div>
+                    <div class="neighbor-box">
+                        <div style="font-size:11px;color:#888;margin-bottom:4px">שיעור הבא</div>
+                        ${ctx.lesson_after ? `<div class="nb-title">${esc(ctx.lesson_after.title || '')}</div><div class="nb-body">${esc((ctx.lesson_after.body || '').slice(0, 200))}</div>` : '<div style="color:#888">—</div>'}
+                    </div>
+                </div>
+
+                <div style="margin-bottom:8px;font-size:13px;color:#888">פרומפט (ניתן לעריכה)</div>
+                <textarea id="genPrompt" rows="10"></textarea>
+
+                <div class="toolbar">
+                    <button class="generate" id="genBtn" onclick="runGenerate()" style="font-size:15px;padding:10px 28px">חולל שיעור</button>
+                </div>
+
+                <div id="genStatus" style="text-align:center;color:#888;font-size:14px"></div>
+                <div id="genResult" class="gen-hidden"></div>
+            </div>`;
+
+            document.getElementById('genPanel').innerHTML = html;
+            buildGenPrompt(data, meth);
+        }
+
+        function buildGenPrompt(data, meth) {
+            const ctx = data.context || {};
+            const lesson = data.current_lesson || data.lesson || {};
+            let src = '';
+            const sources = lesson.sources || data.sources || [];
+            for (const s of sources) {
+                src += '\n- [' + s.source_type + '] ' + s.sefer + ' (' + s.location + '): ' + s.raw_text;
+            }
+            const before = ctx.lesson_before ? 'כותרת: ' + ctx.lesson_before.title + '\nגוף: ' + ctx.lesson_before.body : '(אין — שיעור ראשון)';
+            const after = ctx.lesson_after ? 'כותרת: ' + ctx.lesson_after.title + '\nגוף: ' + ctx.lesson_after.body : '(אין — שיעור אחרון)';
+
+            document.getElementById('genPrompt').value = meth + '\n\n═══════════════════════════════\nMISSION: Write lesson ' + lesson.id + '\n═══════════════════════════════\n\n' +
+                'Chapter: ' + ctx.chapter + ' — ' + ctx.chapter_desc + '\nSection: ' + ctx.section_heading + '\nPosition: ' + ctx.position + ' (' + ctx.position_index + '/' + ctx.total_in_section + ')\n\n' +
+                '── SOURCES ──' + src + '\n\n── LESSON BEFORE ──\n' + before + '\n\n── LESSON AFTER ──\n' + after + '\n\n' +
+                '── CURRENT LESSON ──\nID: ' + (lesson.id || '') + '\nChapter: ' + (lesson.chapter || ctx.chapter || '') + '\nSection: ' + (lesson.section_heading || ctx.section_heading || '') + '\n\n' +
+                '── INSTRUCTIONS ──\nGenerate a new title and body following SKILL-v2 methodology exactly.\nTitle: 5-9 Hebrew words ending with ":"\nBody: One flowing sentence, ~46 words, elevated Lashon Hakodesh.\n' +
+                (ctx.position !== 'opener' ? 'Start body with a connector (וכן, ולפיכך, ועוד ש, גם, אף, יתר על כן, ומכאן ש).\n' : '') +
+                '\nOutput format:\nכותרת: <title>\nגוף: <body>';
+        }
+
+        async function runGenerate() {
+            const key = document.getElementById('genApiKey').value;
+            if (!key) { alert('הכנס Claude API Key'); return; }
+            const prompt = document.getElementById('genPrompt').value;
+            if (!prompt) return;
+
+            const btn = document.getElementById('genBtn');
+            btn.disabled = true;
+            document.getElementById('genStatus').innerHTML = 'מחולל שיעור...<span class="gen-spinner"></span>';
+            document.getElementById('genResult').classList.add('gen-hidden');
+
+            try {
+                const r = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': key,
+                        'anthropic-version': '2023-06-01',
+                        'anthropic-dangerous-direct-browser-access': 'true'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1024,
+                        messages: [{ role: 'user', content: prompt }]
+                    })
+                });
+                const d = await r.json();
+                if (d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+                const text = d.content?.[0]?.text || '';
+
+                const tm = text.match(/כותרת:\s*(.+)/);
+                const bm = text.match(/גוף:\s*(.+)/);
+                const title = tm ? tm[1].trim() : text.split('\n')[0];
+                const body = bm ? bm[1].trim() : text;
+
+                const tw = title.replace(/:$/, '').trim().split(/\s+/).length;
+                const bw = body.trim().split(/\s+/).length;
+                const periods = (body.match(/\./g) || []).length;
+
+                document.getElementById('genResult').innerHTML = `
+                    <div class="result-box">
+                        <div class="result-title">${esc(title)}</div>
+                        <div class="result-body">${esc(body)}</div>
+                        <div class="gen-stats">
+                            <span class="gen-stat">מילות כותרת: <b>${tw}</b> (5-9)</span>
+                            <span class="gen-stat">מילות גוף: <b>${bw}</b> (~46)</span>
+                            <span class="gen-stat">נקודות: <b>${periods}</b> (0-1)</span>
+                            <span class="gen-stat">נקודתיים: <b>${title.endsWith(':') ? '✓' : '✗'}</b></span>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px">
+                        <div style="font-size:13px;color:#888;margin-bottom:4px">הערות (אופציונלי)</div>
+                        <textarea id="genEvalNotes" rows="3" style="width:100%;padding:10px;border:1px solid #d4c5a9;border-radius:6px;font-family:inherit;font-size:14px;direction:rtl;resize:vertical" placeholder="הערות על הגרסה..."></textarea>
+                    </div>
+                    <div class="toolbar">
+                        <button class="generate" onclick="saveGenVersion()" style="background:#2a6b3d;padding:10px 24px;font-size:15px">שמור גרסה</button>
+                        <button class="generate" onclick="runGenerate()" style="padding:10px 24px;font-size:15px">חולל מחדש</button>
+                    </div>`;
+                document.getElementById('genResult').classList.remove('gen-hidden');
+                document.getElementById('genStatus').textContent = '';
+                genData._generated = { title, body };
+            } catch(e) {
+                document.getElementById('genStatus').textContent = 'שגיאה: ' + e.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function saveGenVersion() {
+            if (!genData?._generated) return;
+            const { title, body } = genData._generated;
+            const lessonId = (genData.current_lesson || genData.lesson || {}).id || currentLesson.id;
+            document.getElementById('genStatus').innerHTML = 'שומר...<span class="gen-spinner"></span>';
+            try {
+                const evalNotes = document.getElementById('genEvalNotes')?.value || '';
+                const saveArgs = { lesson_id: lessonId, generated_title: title, generated_body: body };
+                if (evalNotes) saveArgs.evaluation_notes = evalNotes;
+                await mcpCall('save_version', saveArgs);
+                document.getElementById('genStatus').textContent = 'נשמר בהצלחה!';
+                setTimeout(() => {
+                    document.getElementById('genStatus').textContent = '';
+                    // Refresh the lesson to show new version
+                    selectLesson(currentLesson.id);
+                }, 1500);
+            } catch(e) {
+                document.getElementById('genStatus').textContent = 'שגיאה: ' + e.message;
+            }
+        }
+
         async function loadSkillExamples() {
             const examples = await query('skill_examples', 'order=id.asc');
             const content = document.getElementById('content');
@@ -282,6 +519,8 @@
 
             content.innerHTML = html;
         }
+
+        function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
         // Event listeners
         document.getElementById('chapterFilter').addEventListener('change', renderList);
