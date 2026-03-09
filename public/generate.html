@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שפע יואל - מחולל שיעורים</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'David', 'Narkisim', serif; background: #f5f0e8; color: #2c1810; }
+.header { background: #4a2c1a; color: #f5f0e8; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 22px; }
+.header .nav { font-size: 14px; }
+.header a { color: #f5f0e8; text-decoration: none; margin-right: 16px; opacity: 0.8; }
+.header a:hover { opacity: 1; text-decoration: underline; }
+.controls { background: #fff; padding: 12px 24px; border-bottom: 2px solid #d4c5a9; display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+.controls label { font-size: 13px; color: #666; display: block; margin-bottom: 3px; }
+.controls select, .controls input { padding: 6px 10px; border: 1px solid #d4c5a9; border-radius: 4px; font-family: inherit; font-size: 14px; background: #fff; direction: rtl; }
+.controls select { min-width: 140px; }
+.controls input { min-width: 200px; }
+button { padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; }
+.btn-primary { background: #4a2c1a; color: #f5f0e8; }
+.btn-primary:hover { background: #5d3a24; }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-save { background: #2d6a30; color: #fff; }
+.btn-save:hover { background: #3a8a3e; }
+.btn-secondary { background: #d4c5a9; color: #2c1810; }
+.btn-secondary:hover { background: #c4b599; }
+.main { max-width: 1200px; margin: 0 auto; padding: 16px 24px; }
+.panels { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.card { background: #fff; border: 1px solid #d4c5a9; border-radius: 6px; overflow: hidden; }
+.card h3 { background: #f9f5ed; padding: 8px 14px; font-size: 14px; color: #4a2c1a; border-bottom: 1px solid #d4c5a9; }
+.card-body { padding: 12px 14px; font-size: 14px; line-height: 1.7; max-height: 300px; overflow-y: auto; }
+.source-item { background: #f9f5ed; border: 1px solid #e8e0d0; border-radius: 4px; padding: 8px; margin-bottom: 6px; }
+.source-item .sefer { color: #4a2c1a; font-weight: 700; }
+.source-item .loc { color: #888; font-size: 12px; }
+.source-item .text { margin-top: 4px; font-size: 13px; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 12px; font-weight: 700; }
+.badge-opener { background: #2d6a30; color: #fff; }
+.badge-middle { background: #2563eb; color: #fff; }
+.badge-closer { background: #dc2626; color: #fff; }
+.neighbor { background: #f9f5ed; border: 1px solid #e8e0d0; border-radius: 4px; padding: 8px; margin-bottom: 6px; }
+.neighbor .n-title { color: #4a2c1a; font-weight: 700; font-size: 14px; }
+.neighbor .n-body { color: #666; font-size: 13px; margin-top: 3px; }
+textarea { width: 100%; padding: 10px; border: 1px solid #d4c5a9; border-radius: 4px; font-family: inherit; font-size: 14px; line-height: 1.7; resize: vertical; direction: rtl; min-height: 120px; }
+textarea:focus { outline: none; border-color: #4a2c1a; }
+.toolbar { display: flex; gap: 8px; justify-content: center; margin: 14px 0; }
+.result-box { background: #fff; border: 2px solid #4a2c1a; border-radius: 6px; padding: 20px; }
+.result-title { font-size: 20px; font-weight: 700; color: #4a2c1a; margin-bottom: 10px; }
+.result-body { font-size: 16px; line-height: 1.8; color: #2c1810; }
+.stats { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+.stat { background: #f9f5ed; padding: 4px 10px; border-radius: 4px; font-size: 12px; color: #666; }
+.stat b { color: #4a2c1a; }
+#status { text-align: center; padding: 10px; color: #666; font-size: 14px; }
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #d4c5a9; border-top-color: #4a2c1a; border-radius: 50%; animation: spin .6s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.hidden { display: none; }
+.neighbors-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 768px) {
+  .panels, .neighbors-row { grid-template-columns: 1fr; }
+  .controls { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>שפע יואל — מחולל שיעורים</h1>
+  <div class="nav">
+    <a href="/">צפייה</a>
+    <a href="/compare.html">השוואה</a>
+    <a href="/generate.html"><b>מחולל</b></a>
+  </div>
+</div>
+
+<div class="controls">
+  <div>
+    <label>Claude API Key</label>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." />
+  </div>
+  <div>
+    <label>פרק</label>
+    <select id="chapter" onchange="loadSections()"><option value="">בחר...</option></select>
+  </div>
+  <div>
+    <label>סעיף</label>
+    <select id="section" onchange="loadLessons()"><option value="">בחר...</option></select>
+  </div>
+  <div>
+    <label>שיעור</label>
+    <select id="lesson"><option value="">בחר...</option></select>
+  </div>
+  <div>
+    <button class="btn-primary" onclick="loadContext()">טען שיעור</button>
+  </div>
+</div>
+
+<div class="main">
+  <div id="status"></div>
+
+  <div id="contextPanel" class="hidden">
+    <div class="panels">
+      <div class="card">
+        <h3>מקורות</h3>
+        <div class="card-body" id="sourcesPanel"></div>
+      </div>
+      <div class="card">
+        <h3>הקשר</h3>
+        <div class="card-body" id="contextInfo"></div>
+      </div>
+    </div>
+
+    <div class="neighbors-row">
+      <div class="card">
+        <h3>שיעור קודם</h3>
+        <div class="card-body" id="beforePanel">—</div>
+      </div>
+      <div class="card">
+        <h3>שיעור הבא</h3>
+        <div class="card-body" id="afterPanel">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>פרומפט (ניתן לעריכה)</h3>
+      <div class="card-body"><textarea id="prompt" rows="12"></textarea></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn-primary" id="generateBtn" onclick="generate()">חולל שיעור</button>
+    </div>
+  </div>
+
+  <div id="resultPanel" class="hidden">
+    <div class="result-box">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-body" id="resultBody"></div>
+      <div class="stats" id="resultStats"></div>
+    </div>
+    <div class="toolbar">
+      <button class="btn-save" onclick="saveVersion()">שמור גרסה</button>
+      <button class="btn-primary" onclick="generate()">חולל מחדש</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://shefa-yoel-mcp.chezkynewemail.workers.dev';
+let currentData = null;
+let currentMethodology = '';
+
+function $(id) { return document.getElementById(id); }
+
+async function api(path) {
+  const r = await fetch(API + path);
+  return r.json();
+}
+
+async function init() {
+  const k = sessionStorage.getItem('claude_key');
+  if (k) $('apiKey').value = k;
+  $('apiKey').addEventListener('change', () => sessionStorage.setItem('claude_key', $('apiKey').value));
+  try {
+    const chapters = await api('/api/chapters');
+    const sel = $('chapter');
+    for (const c of chapters) {
+      const o = document.createElement('option');
+      o.value = c.chapter;
+      o.textContent = c.chapter + ' — ' + c.description + ' (' + c.count + ')';
+      sel.appendChild(o);
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadSections() {
+  const ch = $('chapter').value;
+  if (!ch) return;
+  const sections = await api('/api/sections?chapter=' + encodeURIComponent(ch));
+  const sel = $('section');
+  sel.innerHTML = '<option value="">בחר...</option>';
+  for (const s of sections) {
+    const o = document.createElement('option');
+    o.value = s.section_heading;
+    o.textContent = s.section + ' — ' + s.section_heading.slice(0, 60);
+    sel.appendChild(o);
+  }
+  $('lesson').innerHTML = '<option value="">בחר...</option>';
+}
+
+async function loadLessons() {
+  const ch = $('chapter').value, sh = $('section').value;
+  if (!ch || !sh) return;
+  const lessons = await api('/api/lessons?chapter=' + encodeURIComponent(ch) + '&section_heading=' + encodeURIComponent(sh));
+  const sel = $('lesson');
+  sel.innerHTML = '<option value="">בחר...</option>';
+  for (const l of lessons) {
+    const o = document.createElement('option');
+    o.value = l.id;
+    const title = l.human_title || '(ללא כותרת)';
+    o.textContent = l.id + ' — ' + title.slice(0, 50) + ' [' + l.status + ']';
+    sel.appendChild(o);
+  }
+}
+
+async function loadContext() {
+  const id = $('lesson').value;
+  if (!id) { alert('בחר שיעור'); return; }
+  $('status').innerHTML = 'טוען...<span class="spinner"></span>';
+  try {
+    const [data, meth] = await Promise.all([
+      api('/api/lesson-context/' + encodeURIComponent(id)),
+      api('/api/methodology')
+    ]);
+    currentData = data;
+    currentMethodology = meth.text || meth;
+
+    const sp = $('sourcesPanel');
+    sp.innerHTML = '';
+    if (data.sources?.length) {
+      for (const s of data.sources) {
+        sp.innerHTML += '<div class="source-item"><span class="sefer">' + esc(s.sefer) + '</span> <span class="loc">' + esc(s.location || '') + '</span> (' + esc(s.source_type) + ')' +
+          '<div class="text">' + esc((s.raw_text || '').slice(0, 300)) + '</div></div>';
+      }
+    } else { sp.textContent = 'אין מקורות'; }
+
+    const ctx = data.context;
+    const bc = ctx.position === 'opener' ? 'badge-opener' : ctx.position === 'closer' ? 'badge-closer' : 'badge-middle';
+    $('contextInfo').innerHTML = '<span class="badge ' + bc + '">' + ctx.position + ' (' + ctx.position_index + '/' + ctx.total_in_section + ')</span>' +
+      '<p style="margin-top:8px">פרק: ' + esc(ctx.chapter) + ' — ' + esc(ctx.chapter_desc || '') + '</p>' +
+      '<p>סעיף: ' + esc(ctx.section_heading || '') + '</p>';
+
+    if (ctx.lesson_before) {
+      $('beforePanel').innerHTML = '<div class="neighbor"><div class="n-title">' + esc(ctx.lesson_before.title || '') + '</div><div class="n-body">' + esc((ctx.lesson_before.body || '').slice(0, 200)) + '</div></div>';
+    } else { $('beforePanel').textContent = '—'; }
+    if (ctx.lesson_after) {
+      $('afterPanel').innerHTML = '<div class="neighbor"><div class="n-title">' + esc(ctx.lesson_after.title || '') + '</div><div class="n-body">' + esc((ctx.lesson_after.body || '').slice(0, 200)) + '</div></div>';
+    } else { $('afterPanel').textContent = '—'; }
+
+    buildPrompt(data, currentMethodology);
+    $('contextPanel').classList.remove('hidden');
+    $('resultPanel').classList.add('hidden');
+    $('status').textContent = '';
+  } catch(e) {
+    $('status').textContent = 'שגיאה: ' + e.message;
+  }
+}
+
+function buildPrompt(data, meth) {
+  const ctx = data.context, lesson = data.lesson;
+  let src = '';
+  for (const s of (data.sources || [])) {
+    src += '\n- [' + s.source_type + '] ' + s.sefer + ' (' + s.location + '): ' + s.raw_text;
+  }
+  const before = ctx.lesson_before ? 'כותרת: ' + ctx.lesson_before.title + '\nגוף: ' + ctx.lesson_before.body : '(אין — שיעור ראשון)';
+  const after = ctx.lesson_after ? 'כותרת: ' + ctx.lesson_after.title + '\nגוף: ' + ctx.lesson_after.body : '(אין — שיעור אחרון)';
+
+  $('prompt').value = meth + '\n\n═══════════════════════════════\nMISSION: Write lesson ' + lesson.id + '\n═══════════════════════════════\n\n' +
+    'Chapter: ' + ctx.chapter + ' — ' + ctx.chapter_desc + '\nSection: ' + ctx.section_heading + '\nPosition: ' + ctx.position + ' (' + ctx.position_index + '/' + ctx.total_in_section + ')\n\n' +
+    '── SOURCES ──' + src + '\n\n── LESSON BEFORE ──\n' + before + '\n\n── LESSON AFTER ──\n' + after + '\n\n' +
+    '── CURRENT LESSON (to rewrite) ──\nTitle: ' + (lesson.human_title || '(empty)') + '\nBody: ' + (lesson.human_body || '(empty)') + '\n\n' +
+    '── INSTRUCTIONS ──\nGenerate a new title and body following SKILL-v2 methodology exactly.\nTitle: 5-9 Hebrew words ending with ":"\nBody: One flowing sentence, ~46 words, elevated Lashon Hakodesh.\n' +
+    (ctx.position !== 'opener' ? 'Start body with a connector (וכן, ולפיכך, ועוד ש, גם, אף, יתר על כן, ומכאן ש).\n' : '') +
+    '\nOutput format:\nכותרת: <title>\nגוף: <body>';
+}
+
+async function generate() {
+  const key = $('apiKey').value;
+  if (!key) { alert('הכנס Claude API Key'); return; }
+  const prompt = $('prompt').value;
+  if (!prompt) return;
+
+  $('generateBtn').disabled = true;
+  $('status').innerHTML = 'מחולל שיעור...<span class="spinner"></span>';
+  $('resultPanel').classList.add('hidden');
+
+  try {
+    const r = await fetch(API + '/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, api_key: key })
+    });
+    const d = await r.json();
+    if (d.error) throw new Error(d.error);
+    const text = d.text || '';
+
+    const tm = text.match(/כותרת:\s*(.+)/);
+    const bm = text.match(/גוף:\s*(.+)/);
+    const title = tm ? tm[1].trim() : text.split('\n')[0];
+    const body = bm ? bm[1].trim() : text;
+
+    $('resultTitle').textContent = title;
+    $('resultBody').textContent = body;
+
+    const tw = title.replace(/:$/, '').trim().split(/\s+/).length;
+    const bw = body.trim().split(/\s+/).length;
+    const periods = (body.match(/\./g) || []).length;
+    $('resultStats').innerHTML =
+      '<span class="stat">מילות כותרת: <b>' + tw + '</b> (5-9)</span>' +
+      '<span class="stat">מילות גוף: <b>' + bw + '</b> (~46)</span>' +
+      '<span class="stat">נקודות: <b>' + periods + '</b> (0-1)</span>' +
+      '<span class="stat">נקודתיים: <b>' + (title.endsWith(':') ? '✓' : '✗') + '</b></span>';
+
+    $('resultPanel').classList.remove('hidden');
+    $('status').textContent = '';
+    currentData._generated = { title, body };
+  } catch(e) {
+    $('status').textContent = 'שגיאה: ' + e.message;
+  } finally {
+    $('generateBtn').disabled = false;
+  }
+}
+
+async function saveVersion() {
+  if (!currentData?._generated) return;
+  const { title, body } = currentData._generated;
+  $('status').innerHTML = 'שומר...<span class="spinner"></span>';
+  try {
+    await fetch(API + '/api/save-version', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lesson_id: currentData.lesson.id, generated_title: title, generated_body: body })
+    });
+    $('status').textContent = 'נשמר בהצלחה!';
+    setTimeout(() => $('status').textContent = '', 3000);
+  } catch(e) {
+    $('status').textContent = 'שגיאה: ' + e.message;
+  }
+}
+
+function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+init();
+</script>
+</body>
+</html>
