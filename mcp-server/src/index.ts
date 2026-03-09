@@ -80,27 +80,33 @@ defineTool(
 );
 
 defineTool(
-  "update_content",
-  "Update methodology, style examples, or any other content document in the database",
+  "update_methodology",
+  "Update the SKILL methodology document (methodology_v2). Use this to revise the lesson-synthesis rules, Iron Laws, section arc guidance, title/body format rules, or style examples. The full markdown content replaces the existing methodology.",
   {
-    key: { type: "string", description: "Content key: 'methodology', 'style_examples', or custom" },
-    value: { type: "string", description: "The full content text (markdown)" },
-    description: { type: "string", description: "Short description" },
+    value: { type: "string", description: "The full SKILL methodology text (markdown). This replaces the entire methodology_v2 document." },
+    changelog: { type: "string", description: "Brief description of what changed in this update" },
   },
-  ["key", "value"],
-  async ({ key, value, description }) => {
+  ["value"],
+  async ({ value, changelog }) => {
+    const key = "methodology_v2";
+    const description = changelog
+      ? `SKILL-v2 methodology — updated: ${changelog}`
+      : "SKILL-v2 methodology";
+    const now = new Date().toISOString();
     const existing = await sb(`content?key=eq.${encodeURIComponent(key)}&select=key`);
-    const body = { key, value, description, updated_at: new Date().toISOString() };
     let data;
     if (existing?.length) {
       data = await sb(`content?key=eq.${encodeURIComponent(key)}`, {
         method: "PATCH",
-        body: JSON.stringify({ value, description, updated_at: new Date().toISOString() }),
+        body: JSON.stringify({ value, description, updated_at: now }),
       });
     } else {
-      data = await sb("content", { method: "POST", body: JSON.stringify(body) });
+      data = await sb("content", {
+        method: "POST",
+        body: JSON.stringify({ key, value, description, updated_at: now }),
+      });
     }
-    return [{ type: "text", text: JSON.stringify(data, null, 2) }];
+    return [{ type: "text", text: JSON.stringify({ updated: key, changelog, timestamp: now, size: value.length }, null, 2) }];
   }
 );
 
