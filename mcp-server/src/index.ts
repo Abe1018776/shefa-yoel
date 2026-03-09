@@ -57,18 +57,20 @@ function defineTool(
 
 defineTool(
   "get_methodology",
-  "Get the SKILL.md lesson-generation methodology. Read this FIRST before writing any lesson.",
+  "Get the SKILL-v2 lesson-synthesis methodology. Read this FIRST before writing any lesson. Covers: the 3 Iron Laws, how to transform sources into lessons, writing style (title 5-9 words ending with ':', body is one flowing ~46-word sentence), section arc (opener/chain/escalation/landing), and complete examples.",
   {},
   [],
   async () => {
-    const rows = await sb("content?key=eq.methodology&select=value");
+    // Try v2 first, fall back to v1
+    let rows = await sb("content?key=eq.methodology_v2&select=value");
+    if (!rows?.length) rows = await sb("content?key=eq.methodology&select=value");
     return [{ type: "text", text: rows?.[0]?.value || "Not found" }];
   }
 );
 
 defineTool(
   "get_style_examples",
-  "Get detailed style examples showing good vs bad lesson writing patterns",
+  "Get detailed style examples showing good vs bad lesson writing patterns. Includes real source→lesson transformations demonstrating: direct extraction, personalizing cosmic statements, extracting practical consequences, and synthesizing multiple sources.",
   {},
   [],
   async () => {
@@ -170,7 +172,7 @@ defineTool(
 
 defineTool(
   "get_lesson",
-  "Get a single lesson with all its sources, context, and metadata",
+  "Get a single lesson with its sources. For writing/editing, prefer get_lesson_with_context which also returns neighbors and position.",
   { lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.1" } },
   ["lesson_id"],
   async ({ lesson_id }) => {
@@ -199,14 +201,134 @@ defineTool(
 );
 
 // ═══════════════════════════════════════════════════════════════
+//  CONTEXT (SKILL-v2 required: lesson before/after, position, arc)
+// ═══════════════════════════════════════════════════════════════
+
+defineTool(
+  "get_lesson_with_context",
+  "Get a lesson with its surrounding context for SKILL-v2 compliant writing. Returns: the lesson, its sources, the lesson BEFORE and AFTER (title+body), section info, and position (opener/middle/closer). Use this instead of get_lesson when writing or editing.",
+  { lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.3" } },
+  ["lesson_id"],
+  async ({ lesson_id }) => {
+    const enc = encodeURIComponent(lesson_id);
+    const [lessons, sources] = await Promise.all([
+      sb(`lessons?id=eq.${enc}`),
+      sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
+    ]);
+    if (!lessons?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
+    const lesson = lessons[0];
+
+    // Get all lessons in same section to determine position and neighbors
+    const sectionLessons = await sb(
+      `lessons?chapter=eq.${encodeURIComponent(lesson.chapter)}&section_heading=eq.${encodeURIComponent(lesson.section_heading)}&select=id,point_number,human_title,human_body&order=point_number`
+    );
+
+    const idx = sectionLessons.findIndex((l: any) => l.id === lesson_id);
+    const total = sectionLessons.length;
+    const position = idx === 0 ? "opener" : idx === total - 1 ? "closer" : "middle";
+    const lessonBefore = idx > 0 ? { title: sectionLessons[idx - 1].human_title, body: sectionLessons[idx - 1].human_body } : null;
+    const lessonAfter = idx < total - 1 ? { title: sectionLessons[idx + 1].human_title, body: sectionLessons[idx + 1].human_body } : null;
+
+    return [{
+      type: "text",
+      text: JSON.stringify({
+        lesson,
+        sources,
+        context: {
+          position,
+          position_index: idx + 1,
+          total_in_section: total,
+          lesson_before: lessonBefore,
+          lesson_after: lessonAfter,
+          chapter: lesson.chapter,
+          chapter_desc: lesson.chapter_desc,
+          section: lesson.section,
+          section_heading: lesson.section_heading,
+        },
+      }, null, 2),
+    }];
+  }
+);
+
+defineTool(
+  "get_section_arc",
+  "Get all lessons in a section to see the full arc: opener→chain→escalation→landing. Essential for maintaining flow when writing or editing any lesson in the section.",
+  {
+    chapter: { type: "string", description: "Chapter letter" },
+    section_heading: { type: "string", description: "Section heading text" },
+  },
+  ["chapter", "section_heading"],
+  async ({ chapter, section_heading }) => {
+    const lessons = await sb(
+      `lessons?chapter=eq.${encodeURIComponent(chapter)}&section_heading=eq.${encodeURIComponent(section_heading)}&select=id,point_number,human_title,human_body,status&order=point_number`
+    );
+    const arc = lessons.map((l: any, i: number) => ({
+      ...l,
+      position: i === 0 ? "opener" : i === lessons.length - 1 ? "closer" : "middle",
+      connector_hint: i === 0 ? "standalone (no connector)" : "needs connector",
+    }));
+    return [{ type: "text", text: JSON.stringify({ section_heading, total_lessons: lessons.length, arc }, null, 2) }];
+  }
+);
+
+defineTool(
+  "validate_lesson",
+  "Validate a lesson against SKILL-v2 quality checklist. Checks: title length (5-9 words, ends with ':'), body structure (one flowing sentence, ~46 words), no forbidden modern Hebrew words, and basic Iron Law compliance.",
+  {
+    title: { type: "string", description: "Lesson title to validate" },
+    body: { type: "string", description: "Lesson body to validate" },
+  },
+  ["title", "body"],
+  async ({ title, body }) => {
+    const issues: string[] = [];
+    const warnings: string[] = [];
+
+    // Title checks
+    if (!title.endsWith(":")) {
+      issues.push("Title must end with ':'");
+    }
+    const titleWords = title.replace(/:$/, "").trim().split(/\s+/);
+    if (titleWords.length < 5) issues.push(`Title too short: ${titleWords.length} words (need 5-9)`);
+    if (titleWords.length > 9) issues.push(`Title too long: ${titleWords.length} words (need 5-9)`);
+
+    // Body checks
+    const bodyWords = body.trim().split(/\s+/);
+    if (bodyWords.length < 20) warnings.push(`Body very short: ${bodyWords.length} words (target ~46)`);
+    if (bodyWords.length > 80) warnings.push(`Body very long: ${bodyWords.length} words (target ~46)`);
+
+    const periods = (body.match(/\./g) || []).length;
+    if (periods > 2) warnings.push(`Body has ${periods} periods - should be one flowing sentence (max 1-2 periods)`);
+
+    // Forbidden modern Hebrew words
+    const forbidden = ["\u05d1\u05d9\u05d8\u05d5\u05d9", "\u05ea\u05d5\u05d1\u05e0\u05d4", "\u05d4\u05e9\u05e4\u05e2\u05d4", "\u05de\u05d9\u05de\u05d5\u05e9", "\u05d0\u05e1\u05e4\u05e7\u05d8 \u05ea\u05d5\u05e8\u05e0\u05d9", "\u05de\u05d4 \u05e9\u05e0\u05d5\u05d2\u05e2 \u05dc"];
+    for (const word of forbidden) {
+      if (body.includes(word) || title.includes(word)) {
+        issues.push(`Forbidden modern Hebrew: "${word}"`);
+      }
+    }
+
+    const passed = issues.length === 0;
+    return [{
+      type: "text",
+      text: JSON.stringify({
+        passed,
+        issues,
+        warnings,
+        stats: { title_words: titleWords.length, body_words: bodyWords.length, periods },
+      }, null, 2),
+    }];
+  }
+);
+
+// ═══════════════════════════════════════════════════════════════
 //  WRITE
 // ═══════════════════════════════════════════════════════════════
 
 defineTool(
   "create_lesson",
-  "Create a new lesson in a chapter/section",
+  "Create a new lesson. IMPORTANT: Follow SKILL-v2 methodology — title must be 5-9 words ending with ':', body must be one flowing sentence ~46 words. Use get_lesson_with_context first to check neighbors for proper connectors.",
   {
-    id: { type: "string", description: "Lesson ID format: chapter.section.point" },
+    id: { type: "string", description: "Lesson ID format: chapter.section.point, e.g. א.1.5" },
     chapter: { type: "string", description: "Chapter letter" },
     chapter_desc: { type: "string", description: "Chapter description" },
     section: { type: "string", description: "Section name / verse" },
@@ -228,7 +350,7 @@ defineTool(
 
 defineTool(
   "update_lesson",
-  "Update fields of an existing lesson",
+  "Update an existing lesson. When updating title/body, follow SKILL-v2: title 5-9 words ending ':', body one flowing sentence. Use validate_lesson to check before saving.",
   {
     lesson_id: { type: "string", description: "Lesson ID to update" },
     human_title: { type: "string", description: "New title" },
@@ -391,7 +513,7 @@ defineTool(
 
 const SERVER_INFO = {
   name: "shefa-yoel",
-  version: "1.0.0",
+  version: "2.0.0",
 };
 
 function jsonrpc(id: any, result: any) {
@@ -414,7 +536,7 @@ async function handleMcpMessage(msg: any): Promise<any> {
       });
 
     case "notifications/initialized":
-      return null; // No response for notifications
+      return null;
 
     case "ping":
       return jsonrpc(id, {});
@@ -467,17 +589,14 @@ export default {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
 
-    // CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS });
     }
 
-    // Streamable HTTP transport: POST /mcp
     if (url.pathname === "/mcp" && request.method === "POST") {
       try {
         const body = await request.json() as any;
 
-        // Handle batch requests
         if (Array.isArray(body)) {
           const results = [];
           for (const msg of body) {
@@ -489,7 +608,6 @@ export default {
           });
         }
 
-        // Single message
         const result = await handleMcpMessage(body);
         if (!result) {
           return new Response("", { status: 202, headers: CORS });
@@ -505,7 +623,6 @@ export default {
       }
     }
 
-    // SSE transport: GET /sse
     if (url.pathname === "/sse" && request.method === "GET") {
       const sessionId = crypto.randomUUID();
       const messageUrl = `${url.origin}/sse/message?sessionId=${sessionId}`;
@@ -552,9 +669,8 @@ export default {
       }
     }
 
-    // Health check
     return new Response(
-      `Shefa Yoel MCP Server\n\nSSE:  ${url.origin}/sse\nHTTP: ${url.origin}/mcp`,
+      `Shefa Yoel MCP Server v2.0\n\nSSE:  ${url.origin}/sse\nHTTP: ${url.origin}/mcp`,
       { headers: { "Content-Type": "text/plain; charset=utf-8", ...CORS } }
     );
   },
