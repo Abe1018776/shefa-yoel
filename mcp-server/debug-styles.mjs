@@ -1,6 +1,6 @@
 import AdmZip from "adm-zip";
 
-const file = process.argv[2] || "C:\\Users\\chezk\\Downloads\\\u05e9\u05e2\u05e8 \u05d4\u05ea\u05d5\u05e8\u05d4 - \u05e4\u05e8\u05e7 \u05d1 \u05d4\u05d7\u05d3\u05e9.docx";
+const file = process.argv[2] || "C:\\Users\\chezk\\Downloads\\שער התורה - פרק ב החדש.docx";
 const zip = new AdmZip(file);
 const docXml = zip.readAsText("word/document.xml");
 

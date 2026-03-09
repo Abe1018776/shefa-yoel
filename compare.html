@@ -123,6 +123,7 @@
 
         let lessons = [];
         let currentLesson = null;
+        let currentVersions = [];
 
         async function init() {
             lessons = await query('lessons', 'order=id.asc');
@@ -169,6 +170,7 @@
 
             const sources = await query('lesson_sources', `lesson_id=eq.${encodeURIComponent(id)}&order=footnote_number.asc`);
             const versions = await query('versions', `lesson_id=eq.${encodeURIComponent(id)}&order=version_number.asc`);
+            currentVersions = versions;
 
             const content = document.getElementById('content');
 
@@ -252,6 +254,15 @@
                 ${v.evaluation_notes ? `<div class="eval-notes">${v.evaluation_notes}</div>` : ''}
                 <div style="margin-top:8px;font-size:11px;color:#888">${v.model || ''} | ${new Date(v.created_at).toLocaleDateString('he')}</div>
             </div>`;
+        }
+
+        function showVersion(versionId) {
+            const v = currentVersions.find(ver => ver.id === versionId);
+            if (!v) return;
+            const panel = document.querySelector('.panel.ai');
+            if (panel) {
+                panel.outerHTML = renderVersion(v, currentVersions);
+            }
         }
 
         async function loadSkillExamples() {
