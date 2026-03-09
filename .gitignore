@@ -3,3 +3,5 @@ __pycache__/
 .env
 benchmark/results/
 .wrangler/
+mcp-server/node_modules/
+mcp-server/.wrangler/

@@ -160,6 +160,7 @@
         let currentLesson = null;
         let genData = null;
         let genMethodology = '';
+        let currentVersions = [];
 
         async function init() {
             lessons = await query('lessons', 'order=id.asc');
@@ -218,6 +219,7 @@
 
             const sources = await query('lesson_sources', `lesson_id=eq.${encodeURIComponent(id)}&order=footnote_number.asc`);
             const versions = await query('versions', `lesson_id=eq.${encodeURIComponent(id)}&order=version_number.asc`);
+            currentVersions = versions;
 
             const content = document.getElementById('content');
             let html = '';
@@ -305,6 +307,7 @@
             </div>`;
         }
 
+<<<<<<< HEAD
         // ── Generate Functions ──
 
         async function mcpCall(method, args = {}) {
@@ -488,6 +491,15 @@
                 }, 1500);
             } catch(e) {
                 document.getElementById('genStatus').textContent = 'שגיאה: ' + e.message;
+            }
+        }
+
+        function showVersion(versionId) {
+            const v = currentVersions.find(ver => ver.id === versionId);
+            if (!v) return;
+            const panel = document.querySelector('.panel.ai');
+            if (panel) {
+                panel.outerHTML = renderVersion(v, currentVersions);
             }
         }
 

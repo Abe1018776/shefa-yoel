@@ -52,14 +52,14 @@ await client.query(`
   INSERT INTO content (key, value, description, updated_at)
   VALUES ($1, $2, $3, NOW())
   ON CONFLICT (key) DO UPDATE SET value = $2, description = $3, updated_at = NOW()
-`, ["methodology", skillMd, "SKILL.md \u2014 Lesson generation methodology and rules"]);
+`, ["methodology", skillMd, "SKILL.md — Lesson generation methodology and rules"]);
 console.log("Inserted methodology");
 
 await client.query(`
   INSERT INTO content (key, value, description, updated_at)
   VALUES ($1, $2, $3, NOW())
   ON CONFLICT (key) DO UPDATE SET value = $2, description = $3, updated_at = NOW()
-`, ["style_examples", styleExamples, "Style examples \u2014 good/bad lesson writing patterns"]);
+`, ["style_examples", styleExamples, "Style examples — good/bad lesson writing patterns"]);
 console.log("Inserted style_examples");
 
 await client.end();
