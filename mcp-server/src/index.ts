@@ -80,27 +80,33 @@ defineTool(
 );
 
 defineTool(
-  "update_content",
-  "Update methodology, style examples, or any other content document in the database",
+  "update_methodology",
+  "Update the SKILL methodology document (methodology_v2). Use this to revise the lesson-synthesis rules, Iron Laws, section arc guidance, title/body format rules, or style examples. The full markdown content replaces the existing methodology.",
   {
-    key: { type: "string", description: "Content key: 'methodology', 'style_examples', or custom" },
-    value: { type: "string", description: "The full content text (markdown)" },
-    description: { type: "string", description: "Short description" },
+    value: { type: "string", description: "The full SKILL methodology text (markdown). This replaces the entire methodology_v2 document." },
+    changelog: { type: "string", description: "Brief description of what changed in this update" },
   },
-  ["key", "value"],
-  async ({ key, value, description }) => {
+  ["value"],
+  async ({ value, changelog }) => {
+    const key = "methodology_v2";
+    const description = changelog
+      ? `SKILL-v2 methodology — updated: ${changelog}`
+      : "SKILL-v2 methodology";
+    const now = new Date().toISOString();
     const existing = await sb(`content?key=eq.${encodeURIComponent(key)}&select=key`);
-    const body = { key, value, description, updated_at: new Date().toISOString() };
     let data;
     if (existing?.length) {
       data = await sb(`content?key=eq.${encodeURIComponent(key)}`, {
         method: "PATCH",
-        body: JSON.stringify({ value, description, updated_at: new Date().toISOString() }),
+        body: JSON.stringify({ value, description, updated_at: now }),
       });
     } else {
-      data = await sb("content", { method: "POST", body: JSON.stringify(body) });
+      data = await sb("content", {
+        method: "POST",
+        body: JSON.stringify({ key, value, description, updated_at: now }),
+      });
     }
-    return [{ type: "text", text: JSON.stringify(data, null, 2) }];
+    return [{ type: "text", text: JSON.stringify({ updated: key, changelog, timestamp: now, size: value.length }, null, 2) }];
   }
 );
 
@@ -573,6 +579,424 @@ defineTool(
 );
 
 // ═══════════════════════════════════════════════════════════════
+//  Reusable data helpers (shared by MCP tools + REST API)
+// ═══════════════════════════════════════════════════════════════
+
+async function fetchChapters() {
+  const rows = await sb("lessons?select=chapter,chapter_desc&order=chapter");
+  const map = new Map<string, { chapter: string; description: string; count: number }>();
+  for (const r of rows) {
+    const e = map.get(r.chapter);
+    if (e) e.count++;
+    else map.set(r.chapter, { chapter: r.chapter, description: r.chapter_desc, count: 1 });
+  }
+  return [...map.values()];
+}
+
+async function fetchSections(chapter: string) {
+  const rows = await sb(
+    `lessons?chapter=eq.${encodeURIComponent(chapter)}&select=section,section_heading&order=section`
+  );
+  const seen = new Set<string>();
+  const result: { section: string; section_heading: string }[] = [];
+  for (const r of rows) {
+    if (!seen.has(r.section_heading)) {
+      seen.add(r.section_heading);
+      result.push({ section: r.section, section_heading: r.section_heading });
+    }
+  }
+  return result;
+}
+
+async function fetchLessons(chapter: string, section_heading?: string) {
+  let q = `lessons?chapter=eq.${encodeURIComponent(chapter)}&select=id,section,section_heading,point_number,human_title,status&order=id`;
+  if (section_heading) q += `&section_heading=${encodeURIComponent(section_heading)}`;
+  q += "&limit=200";
+  return await sb(q);
+}
+
+async function fetchLessonContext(lesson_id: string) {
+  const enc = encodeURIComponent(lesson_id);
+  const [lessons, sources] = await Promise.all([
+    sb(`lessons?id=eq.${enc}`),
+    sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
+  ]);
+  if (!lessons?.length) return null;
+  const lesson = lessons[0];
+  const sectionLessons = await sb(
+    `lessons?chapter=eq.${encodeURIComponent(lesson.chapter)}&section_heading=eq.${encodeURIComponent(lesson.section_heading)}&select=id,point_number,human_title,human_body&order=point_number`
+  );
+  const idx = sectionLessons.findIndex((l: any) => l.id === lesson_id);
+  const total = sectionLessons.length;
+  const position = idx === 0 ? "opener" : idx === total - 1 ? "closer" : "middle";
+  const lessonBefore = idx > 0 ? { title: sectionLessons[idx - 1].human_title, body: sectionLessons[idx - 1].human_body } : null;
+  const lessonAfter = idx < total - 1 ? { title: sectionLessons[idx + 1].human_title, body: sectionLessons[idx + 1].human_body } : null;
+  return { lesson, sources, context: { position, position_index: idx + 1, total_in_section: total, lesson_before: lessonBefore, lesson_after: lessonAfter, chapter: lesson.chapter, chapter_desc: lesson.chapter_desc, section: lesson.section, section_heading: lesson.section_heading } };
+}
+
+async function fetchMethodology() {
+  let rows = await sb("content?key=eq.methodology_v2&select=value");
+  if (!rows?.length) rows = await sb("content?key=eq.methodology&select=value");
+  return rows?.[0]?.value || "";
+}
+
+async function saveNewVersion(lesson_id: string, generated_title: string, generated_body: string) {
+  const existing = await sb(
+    `versions?lesson_id=eq.${encodeURIComponent(lesson_id)}&select=version_number&order=version_number.desc&limit=1`
+  );
+  const nextNum = existing?.length ? existing[0].version_number + 1 : 1;
+  return await sb("versions", {
+    method: "POST",
+    body: JSON.stringify({ lesson_id, version_number: nextNum, generated_title, generated_body, model: "claude-via-app" }),
+  });
+}
+
+const APP_HTML = `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שפע יואל — מחולל שיעורים</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#0f172a;color:#e2e8f0;padding:16px;max-width:1200px;margin:0 auto;direction:rtl}
+h1{text-align:center;color:#f59e0b;margin-bottom:8px;font-size:1.6em}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:20px;font-size:.9em}
+label{font-size:.85em;color:#94a3b8;display:block;margin-bottom:4px}
+select,input,textarea{width:100%;padding:8px 10px;border:1px solid #334155;border-radius:6px;background:#1e293b;color:#e2e8f0;font-size:.95em;font-family:inherit;direction:rtl}
+select:focus,input:focus,textarea:focus{outline:none;border-color:#f59e0b}
+textarea{resize:vertical;min-height:100px;line-height:1.6}
+button{padding:10px 24px;border:none;border-radius:6px;font-size:1em;cursor:pointer;font-weight:600;transition:all .15s}
+.btn-primary{background:#f59e0b;color:#0f172a}
+.btn-primary:hover{background:#fbbf24}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{background:#334155;color:#e2e8f0}
+.btn-secondary:hover{background:#475569}
+.btn-save{background:#10b981;color:#fff}
+.btn-save:hover{background:#34d399}
+.row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.row>*{flex:1;min-width:120px}
+.card{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:14px;margin-bottom:12px}
+.card h3{color:#f59e0b;font-size:.95em;margin-bottom:8px;border-bottom:1px solid #334155;padding-bottom:6px}
+.card pre{white-space:pre-wrap;word-break:break-word;font-size:.85em;line-height:1.5;color:#cbd5e1;max-height:300px;overflow-y:auto}
+.source-item{background:#0f172a;border:1px solid #334155;border-radius:4px;padding:8px;margin-bottom:6px}
+.source-item .sefer{color:#f59e0b;font-weight:600;font-size:.85em}
+.source-item .loc{color:#94a3b8;font-size:.8em}
+.source-item .text{margin-top:4px;font-size:.85em;line-height:1.5}
+.context-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.8em;font-weight:600;margin-left:8px}
+.badge-opener{background:#10b981;color:#fff}
+.badge-middle{background:#3b82f6;color:#fff}
+.badge-closer{background:#ef4444;color:#fff}
+.result-box{background:#1a2332;border:2px solid #f59e0b;border-radius:8px;padding:16px}
+.result-title{font-size:1.2em;font-weight:700;color:#fbbf24;margin-bottom:8px}
+.result-body{font-size:1.05em;line-height:1.7;color:#e2e8f0}
+.stats{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+.stat{background:#0f172a;padding:4px 10px;border-radius:4px;font-size:.8em;color:#94a3b8}
+.stat b{color:#f59e0b}
+.key-row{display:flex;gap:8px;align-items:end;margin-bottom:16px}
+.key-row>div:first-child{flex:1}
+.key-row>button{margin-bottom:0;white-space:nowrap}
+#status{text-align:center;padding:8px;color:#94a3b8;font-size:.9em}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid #334155;border-top-color:#f59e0b;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-left:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+.neighbor{background:#0f172a;border:1px solid #334155;border-radius:4px;padding:8px;margin-bottom:6px}
+.neighbor .n-title{color:#fbbf24;font-weight:600;font-size:.9em}
+.neighbor .n-body{color:#94a3b8;font-size:.85em;margin-top:2px}
+.toolbar{display:flex;gap:8px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<h1>שפע יואל — מחולל שיעורים</h1>
+<p class="subtitle">SKILL-v2 Lesson Generator</p>
+
+<div class="key-row">
+  <div>
+    <label for="apiKey">Claude API Key</label>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." />
+  </div>
+  <button class="btn-secondary" onclick="toggleKey()">הצג</button>
+</div>
+
+<div class="row">
+  <div>
+    <label>פרק</label>
+    <select id="chapter" onchange="loadSections()"><option value="">בחר פרק...</option></select>
+  </div>
+  <div>
+    <label>סעיף</label>
+    <select id="section" onchange="loadLessons()"><option value="">בחר סעיף...</option></select>
+  </div>
+  <div>
+    <label>שיעור</label>
+    <select id="lesson"><option value="">בחר שיעור...</option></select>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="btn-primary" onclick="loadContext()">טען שיעור</button>
+</div>
+
+<div id="contextPanel" class="hidden">
+  <div class="row">
+    <div class="card" style="flex:2">
+      <h3>מקורות</h3>
+      <div id="sourcesPanel"></div>
+    </div>
+    <div class="card" style="flex:1">
+      <h3>הקשר</h3>
+      <div id="contextInfo"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card" id="beforeCard" style="flex:1">
+      <h3>שיעור קודם</h3>
+      <div id="beforePanel">—</div>
+    </div>
+    <div class="card" id="afterCard" style="flex:1">
+      <h3>שיעור הבא</h3>
+      <div id="afterPanel">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>פרומפט (ניתן לעריכה)</h3>
+    <textarea id="prompt" rows="14"></textarea>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn-primary" id="generateBtn" onclick="generate()">חולל שיעור</button>
+  </div>
+</div>
+
+<div id="status"></div>
+
+<div id="resultPanel" class="hidden">
+  <div class="result-box">
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-body" id="resultBody"></div>
+    <div class="stats" id="resultStats"></div>
+  </div>
+  <div class="toolbar">
+    <button class="btn-save" onclick="saveVersion()">שמור גרסה</button>
+    <button class="btn-primary" onclick="generate()">חולל מחדש</button>
+  </div>
+</div>
+
+<script>
+const API = '';
+let currentData = null;
+let currentMethodology = '';
+
+function $(id){return document.getElementById(id)}
+function toggleKey(){const i=$('apiKey');i.type=i.type==='password'?'text':'password'}
+
+async function api(path){
+  const r=await fetch(API+path);
+  return r.json();
+}
+
+async function init(){
+  const k=sessionStorage.getItem('claude_key');
+  if(k) $('apiKey').value=k;
+  $('apiKey').addEventListener('change',()=>sessionStorage.setItem('claude_key',$('apiKey').value));
+  try{
+    const chapters=await api('/api/chapters');
+    const sel=$('chapter');
+    for(const c of chapters){
+      const o=document.createElement('option');
+      o.value=c.chapter;
+      o.textContent=c.chapter+' — '+c.description+' ('+c.count+')';
+      sel.appendChild(o);
+    }
+  }catch(e){console.error(e)}
+}
+
+async function loadSections(){
+  const ch=$('chapter').value;
+  if(!ch)return;
+  const sections=await api('/api/sections?chapter='+encodeURIComponent(ch));
+  const sel=$('section');
+  sel.innerHTML='<option value="">בחר סעיף...</option>';
+  for(const s of sections){
+    const o=document.createElement('option');
+    o.value=s.section_heading;
+    o.textContent=s.section+' — '+s.section_heading.slice(0,60);
+    sel.appendChild(o);
+  }
+  $('lesson').innerHTML='<option value="">בחר שיעור...</option>';
+}
+
+async function loadLessons(){
+  const ch=$('chapter').value,sh=$('section').value;
+  if(!ch||!sh)return;
+  const lessons=await api('/api/lessons?chapter='+encodeURIComponent(ch)+'&section_heading='+encodeURIComponent(sh));
+  const sel=$('lesson');
+  sel.innerHTML='<option value="">בחר שיעור...</option>';
+  for(const l of lessons){
+    const o=document.createElement('option');
+    o.value=l.id;
+    const title=l.human_title||'(ללא כותרת)';
+    o.textContent=l.id+' — '+title.slice(0,50)+' ['+l.status+']';
+    sel.appendChild(o);
+  }
+}
+
+async function loadContext(){
+  const id=$('lesson').value;
+  if(!id){alert('בחר שיעור');return}
+  $('status').innerHTML='טוען...<span class="spinner"></span>';
+  try{
+    const [data,meth]=await Promise.all([
+      api('/api/lesson-context/'+encodeURIComponent(id)),
+      api('/api/methodology')
+    ]);
+    currentData=data;
+    currentMethodology=meth.text||meth;
+
+    // Sources
+    const sp=$('sourcesPanel');
+    sp.innerHTML='';
+    if(data.sources?.length){
+      for(const s of data.sources){
+        sp.innerHTML+='<div class="source-item"><span class="sefer">'+esc(s.sefer)+'</span> <span class="loc">'+esc(s.location||'')+'</span> ('+esc(s.source_type)+')'+
+          '<div class="text">'+esc(s.raw_text?.slice(0,300)||(s.raw_text||''))+'</div></div>';
+      }
+    }else{sp.textContent='אין מקורות'}
+
+    // Context info
+    const ctx=data.context;
+    const badgeClass=ctx.position==='opener'?'badge-opener':ctx.position==='closer'?'badge-closer':'badge-middle';
+    $('contextInfo').innerHTML='<span class="context-badge '+badgeClass+'">'+ctx.position+' ('+ctx.position_index+'/'+ctx.total_in_section+')</span>'+
+      '<p style="margin-top:8px;font-size:.85em">פרק: '+esc(ctx.chapter)+' — '+esc(ctx.chapter_desc||'')+'</p>'+
+      '<p style="font-size:.85em">סעיף: '+esc(ctx.section_heading||'')+'</p>';
+
+    // Before/After
+    if(ctx.lesson_before){
+      $('beforePanel').innerHTML='<div class="neighbor"><div class="n-title">'+esc(ctx.lesson_before.title||'')+'</div><div class="n-body">'+esc(ctx.lesson_before.body?.slice(0,150)||'')+'</div></div>';
+    }else{$('beforePanel').textContent='—'}
+    if(ctx.lesson_after){
+      $('afterPanel').innerHTML='<div class="neighbor"><div class="n-title">'+esc(ctx.lesson_after.title||'')+'</div><div class="n-body">'+esc(ctx.lesson_after.body?.slice(0,150)||'')+'</div></div>';
+    }else{$('afterPanel').textContent='—'}
+
+    // Build prompt
+    buildPrompt(data,currentMethodology);
+
+    $('contextPanel').classList.remove('hidden');
+    $('resultPanel').classList.add('hidden');
+    $('status').textContent='';
+  }catch(e){
+    $('status').textContent='שגיאה: '+e.message;
+  }
+}
+
+function buildPrompt(data,meth){
+  const ctx=data.context;
+  const lesson=data.lesson;
+  let sourcesText='';
+  for(const s of (data.sources||[])){
+    sourcesText+='\\n- ['+s.source_type+'] '+s.sefer+' ('+s.location+'): '+s.raw_text;
+  }
+  const beforeText=ctx.lesson_before?'כותרת: '+ctx.lesson_before.title+'\\nגוף: '+ctx.lesson_before.body:'(אין — זה השיעור הראשון)';
+  const afterText=ctx.lesson_after?'כותרת: '+ctx.lesson_after.title+'\\nגוף: '+ctx.lesson_after.body:'(אין — זה השיעור האחרון)';
+
+  const prompt=meth+'\\n\\n═══════════════════════════════\\nMISSION: Write lesson '+lesson.id+'\\n═══════════════════════════════\\n\\n'+
+    'Chapter: '+ctx.chapter+' — '+ctx.chapter_desc+'\\n'+
+    'Section: '+ctx.section_heading+'\\n'+
+    'Position: '+ctx.position+' ('+ctx.position_index+'/'+ctx.total_in_section+')\\n\\n'+
+    '── SOURCES ──'+sourcesText+'\\n\\n'+
+    '── LESSON BEFORE ──\\n'+beforeText+'\\n\\n'+
+    '── LESSON AFTER ──\\n'+afterText+'\\n\\n'+
+    '── CURRENT LESSON (to rewrite) ──\\n'+
+    'Title: '+(lesson.human_title||'(empty)')+'\\n'+
+    'Body: '+(lesson.human_body||'(empty)')+'\\n\\n'+
+    '── INSTRUCTIONS ──\\n'+
+    'Generate a new title and body for this lesson following SKILL-v2 methodology exactly.\\n'+
+    'Title: 5-9 Hebrew words ending with ":"\\n'+
+    'Body: One flowing sentence, ~46 words, elevated Lashon Hakodesh.\\n'+
+    (ctx.position!=='opener'?'Start body with a connector word (וכן, ולפיכך, ועוד ש, גם, אף, יתר על כן, ומכאן ש).\\n':'')+
+    '\\nOutput format:\\nכותרת: <title>\\nגוף: <body>';
+
+  $('prompt').value=prompt;
+}
+
+async function generate(){
+  const key=$('apiKey').value;
+  if(!key){alert('הכנס Claude API Key');return}
+  const prompt=$('prompt').value;
+  if(!prompt){alert('אין פרומפט');return}
+
+  $('generateBtn').disabled=true;
+  $('status').innerHTML='מחולל שיעור...<span class="spinner"></span>';
+  $('resultPanel').classList.add('hidden');
+
+  try{
+    const r=await fetch(API+'/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt,api_key:key})
+    });
+    const d=await r.json();
+    if(d.error){throw new Error(d.error)}
+    const text=d.text||'';
+
+    // Parse output
+    const titleMatch=text.match(/כותרת:\\s*(.+)/);
+    const bodyMatch=text.match(/גוף:\\s*(.+)/);
+    const title=titleMatch?titleMatch[1].trim():text.split('\\n')[0];
+    const body=bodyMatch?bodyMatch[1].trim():text;
+
+    $('resultTitle').textContent=title;
+    $('resultBody').textContent=body;
+
+    // Stats
+    const tw=title.replace(/:$/,'').trim().split(/\\s+/).length;
+    const bw=body.trim().split(/\\s+/).length;
+    const periods=(body.match(/\\./g)||[]).length;
+    $('resultStats').innerHTML=
+      '<span class="stat">מילות כותרת: <b>'+tw+'</b> (5-9)</span>'+
+      '<span class="stat">מילות גוף: <b>'+bw+'</b> (~46)</span>'+
+      '<span class="stat">נקודות: <b>'+periods+'</b> (0-1)</span>'+
+      '<span class="stat">נקודתיים: <b>'+(title.endsWith(':')?'✓':'✗')+'</b></span>';
+
+    $('resultPanel').classList.remove('hidden');
+    $('status').textContent='';
+
+    currentData._generated={title,body};
+  }catch(e){
+    $('status').textContent='שגיאה: '+e.message;
+  }finally{
+    $('generateBtn').disabled=false;
+  }
+}
+
+async function saveVersion(){
+  if(!currentData?._generated){alert('אין תוצאה');return}
+  const id=currentData.lesson.id;
+  const{title,body}=currentData._generated;
+  $('status').innerHTML='שומר גרסה...<span class="spinner"></span>';
+  try{
+    await fetch(API+'/api/save-version',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({lesson_id:id,generated_title:title,generated_body:body})
+    });
+    $('status').textContent='נשמר בהצלחה!';
+    setTimeout(()=>$('status').textContent='',3000);
+  }catch(e){
+    $('status').textContent='שגיאה: '+e.message;
+  }
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+init();
+</script>
+</body>
+</html>`;
+
+// ═══════════════════════════════════════════════════════════════
 //  MCP Protocol Handler
 // ═══════════════════════════════════════════════════════════════
 
@@ -650,12 +1074,90 @@ const CORS: Record<string, string> = {
 //  Worker entry point
 // ═══════════════════════════════════════════════════════════════
 
+interface Env {
+  CLAUDE_API_KEY?: string;
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env?: Env): Promise<Response> {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS });
+    }
+
+    // ── App UI ──
+    if (url.pathname === "/app" && request.method === "GET") {
+      return new Response(APP_HTML, {
+        headers: { "Content-Type": "text/html; charset=utf-8", ...CORS },
+      });
+    }
+
+    // ── REST API for the App ──
+    if (url.pathname === "/api/chapters" && request.method === "GET") {
+      return Response.json(await fetchChapters(), { headers: CORS });
+    }
+
+    if (url.pathname === "/api/sections" && request.method === "GET") {
+      const ch = url.searchParams.get("chapter");
+      if (!ch) return Response.json({ error: "chapter required" }, { status: 400, headers: CORS });
+      return Response.json(await fetchSections(ch), { headers: CORS });
+    }
+
+    if (url.pathname === "/api/lessons" && request.method === "GET") {
+      const ch = url.searchParams.get("chapter");
+      if (!ch) return Response.json({ error: "chapter required" }, { status: 400, headers: CORS });
+      const sh = url.searchParams.get("section_heading") || undefined;
+      return Response.json(await fetchLessons(ch, sh), { headers: CORS });
+    }
+
+    if (url.pathname.startsWith("/api/lesson-context/") && request.method === "GET") {
+      const id = decodeURIComponent(url.pathname.slice("/api/lesson-context/".length));
+      const data = await fetchLessonContext(id);
+      if (!data) return Response.json({ error: "not found" }, { status: 404, headers: CORS });
+      return Response.json(data, { headers: CORS });
+    }
+
+    if (url.pathname === "/api/methodology" && request.method === "GET") {
+      const text = await fetchMethodology();
+      return Response.json({ text }, { headers: CORS });
+    }
+
+    if (url.pathname === "/api/generate" && request.method === "POST") {
+      try {
+        const { prompt, api_key } = await request.json() as any;
+        const key = api_key || env?.CLAUDE_API_KEY;
+        if (!key) return Response.json({ error: "No API key provided" }, { status: 401, headers: CORS });
+        const resp = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 2048,
+            messages: [{ role: "user", content: prompt }],
+          }),
+        });
+        const result = await resp.json() as any;
+        if (result.error) return Response.json({ error: result.error.message || JSON.stringify(result.error) }, { headers: CORS });
+        const text = result.content?.[0]?.text || "";
+        return Response.json({ text }, { headers: CORS });
+      } catch (e: any) {
+        return Response.json({ error: e.message }, { status: 500, headers: CORS });
+      }
+    }
+
+    if (url.pathname === "/api/save-version" && request.method === "POST") {
+      try {
+        const { lesson_id, generated_title, generated_body } = await request.json() as any;
+        const data = await saveNewVersion(lesson_id, generated_title, generated_body);
+        return Response.json(data, { headers: CORS });
+      } catch (e: any) {
+        return Response.json({ error: e.message }, { status: 500, headers: CORS });
+      }
     }
 
     if (url.pathname === "/mcp" && request.method === "POST") {
@@ -734,8 +1236,12 @@ export default {
       }
     }
 
+    // Health check / redirect to app
+    if (url.pathname === "/") {
+      return Response.redirect(`${url.origin}/app`, 302);
+    }
     return new Response(
-      `Shefa Yoel MCP Server v2.0\n\nSSE:  ${url.origin}/sse\nHTTP: ${url.origin}/mcp`,
+      `Shefa Yoel MCP Server v2.1\n\nApp:  ${url.origin}/app\nSSE:  ${url.origin}/sse\nHTTP: ${url.origin}/mcp`,
       { headers: { "Content-Type": "text/plain; charset=utf-8", ...CORS } }
     );
   },
