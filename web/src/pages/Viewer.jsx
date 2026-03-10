@@ -9,6 +9,7 @@ export default function Viewer() {
   const [activeId, setActiveId] = useState(null)
   const [activeChNum, setActiveChNum] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -127,6 +128,7 @@ export default function Viewer() {
   const selectLesson = useCallback((id, chNum) => {
     setActiveId(id)
     setActiveChNum(chNum)
+    setSidebarOpen(false)
   }, [])
 
   if (loading) {
@@ -136,6 +138,7 @@ export default function Viewer() {
   return (
     <div className="viewer">
       <div className="v-header">
+        <button className="v-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
         <h1>שפע יואל</h1>
         <span className="pipe">|</span>
         <div className="search-box">
@@ -150,7 +153,8 @@ export default function Viewer() {
       </div>
 
       <div className="v-main">
-        <div className="panel-list">
+        {sidebarOpen && <div className="v-overlay" onClick={() => setSidebarOpen(false)} />}
+        <div className={`panel-list ${sidebarOpen ? 'open' : ''}`}>
           <div className="panel-list-header">
             <select className="chapter-select" value={chapter} onChange={e => setChapter(e.target.value)}>
               <option value="all">כל הפרקים</option>

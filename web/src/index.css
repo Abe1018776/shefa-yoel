@@ -29,3 +29,12 @@ body {
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+/* Mobile overlay backdrop */
+.mobile-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 99;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 6px 14px !important; font-size: 13px !important; }
+}

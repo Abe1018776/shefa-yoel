@@ -101,6 +101,8 @@ export default function Compare() {
   // drag and drop
   const [dragId, setDragId] = useState(null)
   const [dragOverId, setDragOverId] = useState(null)
+  // mobile sidebar
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     async function init() {
@@ -141,6 +143,7 @@ export default function Compare() {
   async function selectLesson(lesson) {
     setCurrentLesson(lesson)
     setShowExamples(false)
+    setSidebarOpen(false)
     const { data: srcData } = await supabase.from('lesson_sources').select('*').eq('lesson_id', lesson.id).order('footnote_number')
     const { data: verData } = await supabase.from('versions').select('*').eq('lesson_id', lesson.id).order('version_number')
     setSources(srcData || [])
@@ -196,6 +199,7 @@ export default function Compare() {
   return (
     <div className="compare">
       <div className="c-header">
+        <button className="c-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
         <h1>שפע יואל — השוואת גרסאות</h1>
         <div className="c-stats">{lessons.length} שיעורים | {totalVersions} גרסאות</div>
       </div>
@@ -220,7 +224,8 @@ export default function Compare() {
       </div>
 
       <div className="c-main">
-        <div className="c-lesson-list">
+        {sidebarOpen && <div className="c-overlay" onClick={() => setSidebarOpen(false)} />}
+        <div className={`c-lesson-list ${sidebarOpen ? 'open' : ''}`}>
           {sections.map(sec => (
             <div key={`${sec.chapter}|${sec.heading}`}>
               <div className="c-section-header">{sec.heading || `פרק ${sec.chapter}`}</div>

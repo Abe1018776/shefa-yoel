@@ -219,3 +219,96 @@
 }
 .diff-added { background: #d4edda; color: #155724; padding: 1px 2px; border-radius: 2px; }
 .diff-removed { background: #f8d7da; color: #721c24; padding: 1px 2px; border-radius: 2px; text-decoration: line-through; }
+
+/* ── Mobile overlay ── */
+.c-overlay {
+  display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.3); z-index: 99;
+}
+
+/* ── Mobile menu button (hidden on desktop) ── */
+.c-menu-btn {
+  display: none; background: none; border: 1px solid rgba(255,255,255,0.3); color: #f5f0e8;
+  font-size: 20px; padding: 4px 10px; border-radius: 6px; cursor: pointer; line-height: 1;
+}
+
+/* ════════════════════════════════════════════════
+   MOBILE RESPONSIVE — max-width: 768px
+   ════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Header */
+  .c-menu-btn { display: block; }
+  .c-header { padding: 12px 16px; }
+  .c-header h1 { font-size: 16px; }
+  .c-stats { font-size: 12px; }
+
+  /* Controls */
+  .c-controls { padding: 8px 12px; gap: 8px; }
+  .c-controls select, .c-controls input { font-size: 13px; padding: 6px 8px; flex: 1; min-width: 0; }
+  .c-controls input { width: auto !important; }
+  .c-controls button { font-size: 12px; padding: 6px 10px; }
+
+  /* Overlay */
+  .c-overlay { display: block; }
+
+  /* Sidebar — off-canvas overlay on mobile */
+  .c-main { position: relative; }
+  .c-lesson-list {
+    position: absolute; top: 0; right: 0; bottom: 0; z-index: 100;
+    width: 85vw; max-width: 320px;
+    transform: translateX(100%); transition: transform 0.25s ease;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+  }
+  .c-lesson-list.open { transform: translateX(0); }
+
+  /* Content */
+  .c-content { padding: 14px; }
+  .c-empty { padding: 30px; }
+
+  /* Action bar */
+  .c-action-bar { gap: 6px; }
+  .c-action-bar button { padding: 6px 10px; font-size: 12px; }
+
+  /* Comparison: stack panels vertically */
+  .c-comparison { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Panels */
+  .c-panel { padding: 14px; }
+  .c-panel h3 { font-size: 14px; }
+  .c-sources-panel { padding: 14px; }
+  .c-sources-panel h3 { font-size: 14px; }
+  .c-source-item { padding: 10px; }
+  .c-title-text { font-size: 14px; }
+  .c-body-text { font-size: 13px; line-height: 1.7; }
+
+  /* Version tabs: scrollable */
+  .version-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .version-tab { flex-shrink: 0; }
+
+  /* Version actions */
+  .c-version-actions { flex-wrap: wrap; }
+
+  /* Scores */
+  .c-scores { gap: 8px; }
+  .c-score-value { font-size: 16px; }
+
+  /* Scoring form */
+  .c-scoring-form { gap: 8px; padding: 10px; }
+
+  /* New human form */
+  .c-new-human { padding: 14px; }
+
+  /* Diff controls */
+  .c-diff-controls { flex-wrap: wrap; font-size: 12px; }
+}
+
+/* ════════════════════════════════════════════════
+   SMALL MOBILE — max-width: 480px
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .c-header h1 { font-size: 14px; }
+  .c-controls { flex-direction: column; align-items: stretch; }
+  .c-action-bar { flex-direction: column; }
+  .c-action-bar button { width: 100%; }
+  .c-form-actions { flex-direction: column; }
+  .c-form-actions button, .c-form-actions .btn-primary { width: 100%; }
+}
