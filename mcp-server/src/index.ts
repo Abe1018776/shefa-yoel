@@ -212,15 +212,14 @@ defineTool(
 
 defineTool(
   "get_generation_context",
-  "Get context for generating a lesson from scratch. Returns: the lesson BEFORE (title + body + sources), the lesson AFTER (title + body + sources), the current lesson's sources ONLY (no title/body to avoid bias), position info, and methodology. Use this when you want to write a fresh lesson without being influenced by the existing text.",
+  "Get context for generating a lesson from scratch. Returns: the lesson BEFORE (title + body + sources), the lesson AFTER (title + body + sources), the current lesson's sources ONLY (no title/body to avoid bias), and position info. Use this when you want to write a fresh lesson without being influenced by the existing text.",
   { lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.3" } },
   ["lesson_id"],
   async ({ lesson_id }) => {
     const enc = encodeURIComponent(lesson_id);
-    const [lessons, sources, methodology] = await Promise.all([
+    const [lessons, sources] = await Promise.all([
       sb(`lessons?id=eq.${enc}`),
       sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
-      sb("content?key=eq.methodology_v2&select=value"),
     ]);
     if (!lessons?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
     const lesson = lessons[0];
@@ -268,7 +267,6 @@ defineTool(
           lesson_before: lessonBefore,
           lesson_after: lessonAfter,
         },
-        methodology: methodology?.[0]?.value || "Not found",
       }, null, 2),
     }];
   }
@@ -528,12 +526,11 @@ defineTool(
   async ({ lesson_id, version_number }) => {
     const enc = encodeURIComponent(lesson_id);
 
-    // Fetch lesson, version, sources, and methodology in parallel
-    const [lessons, versions, sources, methodology] = await Promise.all([
+    // Fetch lesson, version, and sources in parallel
+    const [lessons, versions, sources] = await Promise.all([
       sb(`lessons?id=eq.${enc}`),
       sb(`versions?lesson_id=eq.${enc}&version_number=eq.${version_number}`),
       sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
-      sb("content?key=eq.methodology_v2&select=value"),
     ]);
 
     if (!lessons?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
@@ -594,8 +591,7 @@ defineTool(
           lesson_before: lessonBefore,
           lesson_after: lessonAfter,
         },
-        methodology: methodology?.[0]?.value || "Not found",
-        evaluation_instructions: "Score the AI version (1-10) on: (1) Source fidelity — does it faithfully represent the sources? (2) SKILL-v2 format — title 5-9 words ending ':', body one flowing ~46-word sentence (3) Section flow — does it connect naturally to the lessons before/after? (4) Tone — warm, direct, second-person as per methodology. Provide a short analysis with strengths, weaknesses, and suggested improvements.",
+        evaluation_instructions: "Score the AI version (1-10) on: (1) Source fidelity — does it faithfully represent the sources? (2) SKILL-v2 format — title 5-9 words ending ':', body one flowing ~46-word sentence (3) Section flow — does it connect naturally to the lessons before/after? (4) Tone — warm, direct, second-person. Provide a short analysis with strengths, weaknesses, and suggested improvements.",
       }, null, 2),
     }];
   }
