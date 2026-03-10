@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
 import './Viewer.css'
 
 export default function Viewer() {
@@ -7,9 +8,85 @@ export default function Viewer() {
   const [search, setSearch] = useState('')
   const [activeId, setActiveId] = useState(null)
   const [activeChNum, setActiveChNum] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/data/combined.json').then(r => r.json()).then(setData)
+    async function load() {
+      const [{ data: lessons, error: lErr }, { data: sources, error: sErr }] = await Promise.all([
+        supabase.from('lessons').select('*').order('id'),
+        supabase.from('lesson_sources').select('*').order('footnote_number'),
+      ])
+
+      if (lErr || sErr) {
+        console.error('Supabase error:', lErr || sErr)
+        setLoading(false)
+        return
+      }
+
+      // Index sources by lesson_id
+      const sourceMap = {}
+      for (const s of sources || []) {
+        if (!sourceMap[s.lesson_id]) sourceMap[s.lesson_id] = []
+        sourceMap[s.lesson_id].push(s)
+      }
+
+      // Group lessons into chapters → sections → lessons
+      const chapterMap = new Map()
+      for (const l of lessons || []) {
+        if (!chapterMap.has(l.chapter)) {
+          chapterMap.set(l.chapter, {
+            number: l.chapter,
+            description: l.chapter_desc || '',
+            sections: new Map(),
+          })
+        }
+        const ch = chapterMap.get(l.chapter)
+        const secKey = l.section_heading || l.section || 'כללי'
+        if (!ch.sections.has(secKey)) {
+          ch.sections.set(secKey, {
+            heading: l.section_heading || '',
+            verse: l.section || '',
+            lessons: [],
+          })
+        }
+
+        // Build footnotes from lesson_sources
+        const lessonSources = sourceMap[l.id] || []
+        const footnoteNums = [...new Set(lessonSources.map(s => s.footnote_number).filter(Boolean))]
+        const footnotes = {}
+        for (const s of lessonSources) {
+          const num = s.footnote_number
+          if (!num) continue
+          if (!footnotes[num]) footnotes[num] = { raw: s.raw_text, sources: [] }
+          footnotes[num].sources.push({
+            sefer: s.sefer,
+            location: s.location,
+            quote: s.raw_text,
+            language: s.language,
+            is_supporting: s.source_type === 'supporting',
+          })
+        }
+
+        ch.sections.get(secKey).lessons.push({
+          id: l.id,
+          title: l.human_title || '',
+          body: l.human_body || '',
+          footnote_refs: footnoteNums,
+          endnote_refs: [],
+          footnotes,
+          endnotes_data: {},
+        })
+      }
+
+      const result = [...chapterMap.values()].map(ch => ({
+        ...ch,
+        sections: [...ch.sections.values()],
+      }))
+
+      setData(result)
+      setLoading(false)
+    }
+    load()
   }, [])
 
   const filtered = useMemo(() => {
@@ -51,6 +128,10 @@ export default function Viewer() {
     setActiveId(id)
     setActiveChNum(chNum)
   }, [])
+
+  if (loading) {
+    return <div className="viewer"><div className="empty-state">טוען...</div></div>
+  }
 
   return (
     <div className="viewer">
