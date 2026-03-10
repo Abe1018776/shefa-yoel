@@ -399,6 +399,29 @@ defineTool(
 );
 
 defineTool(
+  "add_title",
+  "Add a title to a lesson that is missing one. Only sets human_title — does not overwrite if one already exists. Use SKILL-v2 format: 5-9 Hebrew words ending with ':'.",
+  {
+    lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.3" },
+    human_title: { type: "string", description: "The title to add (Hebrew, 5-9 words, ends with ':')" },
+  },
+  ["lesson_id", "human_title"],
+  async ({ lesson_id, human_title }) => {
+    const enc = encodeURIComponent(lesson_id);
+    const existing = await sb(`lessons?id=eq.${enc}&select=id,human_title`);
+    if (!existing?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
+    if (existing[0].human_title && existing[0].human_title.trim() !== "") {
+      return [{ type: "text", text: `Lesson ${lesson_id} already has a title: "${existing[0].human_title}". Use update_lesson to change it.` }];
+    }
+    const data = await sb(`lessons?id=eq.${enc}`, {
+      method: "PATCH",
+      body: JSON.stringify({ human_title, updated_at: new Date().toISOString() }),
+    });
+    return [{ type: "text", text: JSON.stringify(data, null, 2) }];
+  }
+);
+
+defineTool(
   "delete_lesson",
   "Delete a lesson and all its sources",
   { lesson_id: { type: "string", description: "Lesson ID to delete" } },
