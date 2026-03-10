@@ -517,6 +517,90 @@ defineTool(
   }
 );
 
+defineTool(
+  "evaluate_version",
+  "Evaluate an AI-generated version against the original lesson, its sources, and surrounding context. Returns the original lesson, the specified version, all sources, neighbor lessons with their sources, and methodology — structured for analysis and scoring.",
+  {
+    lesson_id: { type: "string", description: "Lesson ID, e.g. א.1.3" },
+    version_number: { type: "number", description: "Version number to evaluate" },
+  },
+  ["lesson_id", "version_number"],
+  async ({ lesson_id, version_number }) => {
+    const enc = encodeURIComponent(lesson_id);
+
+    // Fetch lesson, version, sources, and methodology in parallel
+    const [lessons, versions, sources, methodology] = await Promise.all([
+      sb(`lessons?id=eq.${enc}`),
+      sb(`versions?lesson_id=eq.${enc}&version_number=eq.${version_number}`),
+      sb(`lesson_sources?lesson_id=eq.${enc}&order=footnote_number`),
+      sb("content?key=eq.methodology_v2&select=value"),
+    ]);
+
+    if (!lessons?.length) return [{ type: "text", text: `Lesson ${lesson_id} not found` }];
+    if (!versions?.length) return [{ type: "text", text: `Version ${version_number} not found for lesson ${lesson_id}` }];
+
+    const lesson = lessons[0];
+    const version = versions[0];
+
+    // Get section lessons for neighbors
+    const sectionLessons = await sb(
+      `lessons?chapter=eq.${encodeURIComponent(lesson.chapter)}&section_heading=eq.${encodeURIComponent(lesson.section_heading)}&select=id,point_number,human_title,human_body&order=point_number`
+    );
+
+    const idx = sectionLessons.findIndex((l: any) => l.id === lesson_id);
+    const total = sectionLessons.length;
+    const position = idx === 0 ? "opener" : idx === total - 1 ? "closer" : "middle";
+
+    // Get neighbors with their sources
+    let lessonBefore = null;
+    if (idx > 0) {
+      const prev = sectionLessons[idx - 1];
+      const prevSources = await sb(`lesson_sources?lesson_id=eq.${encodeURIComponent(prev.id)}&order=footnote_number`);
+      lessonBefore = { id: prev.id, title: prev.human_title, body: prev.human_body, sources: prevSources };
+    }
+
+    let lessonAfter = null;
+    if (idx < total - 1) {
+      const next = sectionLessons[idx + 1];
+      const nextSources = await sb(`lesson_sources?lesson_id=eq.${encodeURIComponent(next.id)}&order=footnote_number`);
+      lessonAfter = { id: next.id, title: next.human_title, body: next.human_body, sources: nextSources };
+    }
+
+    return [{
+      type: "text",
+      text: JSON.stringify({
+        original_lesson: {
+          id: lesson.id,
+          human_title: lesson.human_title,
+          human_body: lesson.human_body,
+          chapter: lesson.chapter,
+          chapter_desc: lesson.chapter_desc,
+          section: lesson.section,
+          section_heading: lesson.section_heading,
+          point_number: lesson.point_number,
+        },
+        ai_version: {
+          version_number: version.version_number,
+          generated_title: version.generated_title,
+          generated_body: version.generated_body,
+          model: version.model,
+          evaluation_notes: version.evaluation_notes,
+        },
+        sources,
+        context: {
+          position,
+          position_index: idx + 1,
+          total_in_section: total,
+          lesson_before: lessonBefore,
+          lesson_after: lessonAfter,
+        },
+        methodology: methodology?.[0]?.value || "Not found",
+        evaluation_instructions: "Score the AI version (1-10) on: (1) Source fidelity — does it faithfully represent the sources? (2) SKILL-v2 format — title 5-9 words ending ':', body one flowing ~46-word sentence (3) Section flow — does it connect naturally to the lessons before/after? (4) Tone — warm, direct, second-person as per methodology. Provide a short analysis with strengths, weaknesses, and suggested improvements.",
+      }, null, 2),
+    }];
+  }
+);
+
 // ═══════════════════════════════════════════════════════════════
 //  SOURCES
 // ═══════════════════════════════════════════════════════════════
